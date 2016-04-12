@@ -1,7 +1,7 @@
 /**
  * Created by abdo on 2016-03-08.
  */
-
+var fs = require('fs');
 exports.index = function (req, res) {
 	var returnResponse = function(collection){
 		res.json(collection);
@@ -30,10 +30,44 @@ exports.one = function(req,res){
 	;
 
 };
+function ensureExists(path, mask, cb) {
+    if (typeof mask == 'function') { // allow the `mask` parameter to be optional
+        cb = mask;
+        mask = 0777;
+    }
+    fs.mkdir(path, mask, function(err) {
+        if (err) {
+            if (err.code == 'EEXIST') cb(null); // ignore the error if the folder already exists
+            else cb(err); // something else went wrong
+        } else cb(null); // successfully created folder
+    });
+};
 exports.create = function(req,res){
 	var returnResponse = function(obj){
+		var dirProfil = './public/ressources/images/users/imgProfil/'+ obj.email+'/';
+		var dirDevis = './public/ressources/images/users/imgDevis/'+ obj.email;
+		/*if (!fs.existsSync(dirProfil)){
+		    fs.mkdirSync(dirProfil);
+		}
+		if (!fs.existsSync(dirDevis)){
+		    fs.mkdirSync(dirDevis);
+		}
+		*/
+		ensureExists(dirProfil, 0007, function(err) {
+		    if (err)// handle folder creation error
+		    	return err;
+		    
+
+		})
+		ensureExists(dirDevis, 0007, function(err) {
+		    if (err)// handle folder creation error
+		    	return err;
+		    
+
+		})
 		res.json(obj);
-	};
+	}
+
 	var returnError = function(){
 		res.json({ success: false, message: 'Problem : password required or email exist' });
 	};
