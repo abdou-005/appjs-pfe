@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var app = angular.module('myApp',['ngRoute','btford.socket-io','geolocation']);
+var app = angular.module('myApp',['ngRoute','btford.socket-io','geolocation', 'ngFileUpload']);
 
 app.run(function($rootScope, $http,$location) {
 	$rootScope.authenticated = false;

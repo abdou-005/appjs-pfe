@@ -1,24 +1,19 @@
 
 'use strict';
-app
-	.controller('demandeDevisCtrl',function($scope ,devisProvider,socketDevisFactory){
 
-        $scope.messages = [];
+app.controller('demandeDevisCtrl', ['Upload', '$scope', 'devisProvider', function(Upload, $scope,devisProvider){
 
-        socketDevisFactory.on('message',function(data){
-           $scope.messages.push(data.message);
-        });
 
-		var refrechTous = function(){
+        var refrechTous = function(){
             devisProvider.getDevis(function(data){
                 $scope.devis = data;
+                $scope.devi = '';
                 $scope.title = '';
                 $scope.contents = '';
-                $scope.state = '';
+                $scope.state= '';
                 $scope.type= '';
-                $scope.specialite= '';
-                $scope.offres= '';
-                $scope.mission= '';
+                $scope.offres = '';
+                $scope.image = '';
             });
 
          };
@@ -43,6 +38,7 @@ app
             console.log($scope.offres);
         };
 
+        
         $scope.removeOffre = function(t){
             console.log(t);
             for(var offre in $scope.offres){
@@ -51,15 +47,17 @@ app
                 }
             }
         };
+
+        
+       
         $scope.createDevis = function(){
-            console.log($scope.devis);
+            console.log($scope.devi);
             console.log($scope.offres);
-            $scope.devis.offres = $scope.offres;
-            //$scope.domaine.specialites = $scope.specialites;
+            $scope.devi.offres = $scope.offres;
+           console.log('--------------');
+            console.log($scope.devi);
             console.log('--------------');
-            console.log($scope.devis);
-            console.log('--------------');
-            devisProvider.createDevis($scope.devis,function(data){
+            devisProvider.createDevis($scope.devi,function(data){
                 console.log('data =',data);
             });
             refrechTous();
@@ -76,13 +74,14 @@ app
                 }
                 devisProvider.updateDevis(data,function(data){
                     console.log('data = ',data);
-                    $scope.devis = data;
+                    $scope.devi = data;
                 });
                 refrech();
             });
 
         };
 
+        
         $scope.removeDevis = function(id){
             devisProvider.removeDevis(id,function(data){
                 console.log('data = ',data);
@@ -92,10 +91,10 @@ app
 
         $scope.editDevis = function(id){
             console.log('Object ID = ',id);
-            console.log('scope.c = ',$scope.devis);
+            console.log('scope.c = ',$scope.devi);
             devisProvider.editDevis(id,function(data){
                 console.log('data = ',data);
-                $scope.devis = data;
+                $scope.devi = data;
             });
 
         };
@@ -103,21 +102,56 @@ app
         $scope.updateDevis = function(){
             if($scope.offres){
                 for(var t in $scope.offres){
-                    $scope.devis.offres.push($scope.offres[t]);
+                    $scope.devi.offres.push($scope.offres[t]);
                 }
                 $scope.offres = '';
             }
-            devisProvider.updateDevis($scope.devis,function(data){
+            
+            devisProvider.updateDevis($scope.devi,function(data){
                 console.log('data = ',data);
-                $scope.devis = data;
+                $scope.devi = data;
             });
             refrech();
         };
 
         $scope.deselect = function(){
-            $scope.devis = '';
+            $scope.devi = '';
         }
 
-	});
+        $scope.cancel = function(){
+            $scope.offre = '';
+        }
 
+        $scope.upload = function (file) {
+            Upload.upload({
+                url: 'upload/',
+                data: {file: file}
+            }).then(function (resp) {
+                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+            }, function (resp) {
+                console.log('Error status: ' + resp.status);
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+            });
+        };
 
+        
+         $scope.uploadFiles = function (files) {
+            if (files && files.length) {
+                for (var i = 0; i < files.length; i++) {
+                    Upload.upload({
+                        url: 'upload/',
+                        data: {file: files[i]}
+                    }).then(function (resp) {
+                        console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+                    }, function (resp) {
+                        console.log('Error status: ' + resp.status);
+                    }, function (evt) {
+                        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+                    }); 
+                }
+            }
+        };
+    }]);

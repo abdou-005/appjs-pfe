@@ -65,12 +65,13 @@ require('./app/routes/offres');
 var authenticatejwt = require('./app/routes/authenticationjwt');
 var usersRoute = require('./app/routes/users');
 var domainesRoute = require('./app/routes/domaines');
+var demandeDevis = require('./app/routes/demanderDevis');
 
 // apply the routes to our application with the prefix
 app.use('/auth', authenticatejwt);
 app.use('/users', usersRoute);
 app.use('/domaines', domainesRoute);
-
+app.use('/devis',demandeDevis);
 /// test Schema
 /*
 var devi = new models.Devi({
