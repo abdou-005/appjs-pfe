@@ -1,0 +1,85 @@
+<div class="col-md-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+          <h2> <small> <a href="/login">Login</a> </small> or  Create Account </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Settings 1</a>
+                        </li>
+                        <li><a href="#">Settings 2</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content center-block">
+            {{user}}
+            <p style="color: red;">{{error_message}}</p>
+            <p style="color: green;">{{message}}</p>
+            <form class="form-horizontal form-label-left" name="formInscrit">
+                <div class="form-group">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12">Email <span class="required">*</span></label>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <input type="text" class="form-control" placeholder="Email" name="email" ng-model="user.email" required="" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12">Password <span class="required">*</span></label>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <input type="password" class="form-control" placeholder="Password" name="password" ng-model="user.password" required="" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-2 col-xs-12 control-label">Choisir un type
+                        <br>
+                        <small class="text-navy">client/prestataire  <span class="required">*</span></small>
+                    </label>
+                    <div class="col-md-4 col-sm-4 col-xs-12" ng-init=" showPrest=false; showClient = false;">
+                        <label for="client">
+                            <input type="radio" id="client" name="typeuser" ng-model="user.typeUser" value="client"  >
+                            <span ng-click="showClient = true; showPrest=false; showSpec=false;" >Client</span>
+                        </label>
+
+                        <label for="artisan">
+                            <input type="radio" id="artisan" name="typeuser" ng-model="user.typeUser" value="artisan" >
+                            <span ng-click="showClient = false; showPrest=true;">Prestataire</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" ng-init="showSpec = false" ng-show="showPrest">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12">Domaine </label>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <select name="spc" ng-model = "domaine._id" class="form-control" ng-click="getSpecialites(domaine._id)" >
+                            <option value="">--Domaine--</option>
+                            <option value="{{d._id}}"  ng-repeat="d in domaines"  >{{d.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="showSpec">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12">Specialites</label>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <select name="multipleSelect" id="multipleSelect" class="form-control"  ng-model="user.specialites" multiple>
+                            <option value="{{s.name}}" ng-repeat="s in specialitesDom">{{s.name}}</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                        <button  class="btn btn-default btn-sm" ng-click="registerUser()">Signup</button>
+                        <button  class="btn btn-info btn-sm" ng-click="deselect()">cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,296 @@
+<div ng-controller="homeCtrl">
+    <div class="col-md-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Ajouter un utilisateur <small>ADMIN</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Settings 1</a>
+                            </li>
+                            <li><a href="#">Settings 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form class="form-horizontal form-label-left" name="formInscrit">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12">Nom <span class="required">*</span></label>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <input type="text" class="form-control" placeholder="Nom" ng-model="user.firstname" value="autre">
+                        </div>
+
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12">Prenom <span class="required">*</span></label>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <input type="text" class="form-control" placeholder="Prenom" ng-model="user.lastname">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12">E-mail <span class="required">*</span></label>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <input type="email"  class="form-control" placeholder="E-mail" ng-model="user.email" required="true">
+
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12">Password <span class="required">*</span></label>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <input type="password" class="form-control" placeholder="******" ng-model="user.password" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12">Tel </label>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <input type="tel" class="form-control" placeholder="Mobile" ng-model="user.telMobil">
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12">Tel </label>
+                        <div class="col-md-4  col-sm-4 col-xs-12">
+                            <input type="tel" class="form-control" placeholder="Bureau" ng-model="user.telDomi">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-md-offset-2 col-sm-3 col-xs-12 control-label">Choisir un type
+                            <br>
+                            <small class="text-navy">client/prestataire/ADMIN</small>
+                        </label>
+                        <div class="col-md-4 col-sm-4 col-xs-12" ng-init=" showprest=false; showadmin=false; showclient=true;">
+                            <label for="client">
+                                <input type="radio" id="client" name="typeuser" ng-model="user.typeUser" value="client"  >
+                                <span ng-click="showprest=false; showadmin=false; showclient=true;" >Client</span>
+                            </label>
+
+                            <label for="artisan">
+                                <input type="radio" id="artisan" name="typeuser" ng-model="user.typeUser" value="artisan" >
+                                <span ng-click="showprest=true; showadmin=false; showclient=false;">Prestataire</span>
+                            </label>
+
+                            <label for="admin">
+                                <input type="radio" id="admin" name="typeuser" ng-model="user.typeUser" value="admin" >
+                                <span ng-click="showprest=false; showadmin=true; showclient=false;">Admin</span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Client-->
+                    <div class="form-group" ng-show="showclient">
+                        <label class="control-label col-md-3 col-md-offset-2 col-sm-3 col-xs-12">Etat</label>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="">
+                                <label ng-init="activer = true" >
+                                    <input type="checkbox" class="js-switch"   ng-model="user.etat" />
+                                    <span ng-show="activer" ng-click="activer=false;"> Desactiver</span>
+                                    <span ng-hide="activer" ng-click="activer=true;">Activer</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- //client-->
+                    {{user}}
+                    <!-- Prestataire-->
+                    <div ng-show="showprest">
+                        <div class="form-group">
+                            <label class="col-md-3 col-md-offset-2 col-sm-3 col-xs-12 control-label">type
+                                <br>
+                                <small class="text-navy">Artisan/Societe</small>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label for="autoentropeneur">
+                                    <input type="radio"  id="autoentropeneur" name="typeprest" ng-model="user.type" value="autoentropeneur" > Auto entrepreneur
+                                </label>
+                                <label for="societe">
+                                    <input type="radio" id="societe" name="typeprest" ng-model="user.type" value="societe"> Societe
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="!user.dateDebut">
+                            <label class="control-label col-md-3 col-md-offset-2 col-sm-3 col-xs-12">Date Debut <span class="required">*</span></label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input type="date" class="form-control" ng-model="user.dateDebut">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-md-offset-2 col-sm-3 col-xs-12">Effectif </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input type="number" class="form-control" placeholder="0" ng-model="user.effectif">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-md-offset-2 col-sm-3 col-xs-12">Etat</label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="">
+                                    <label ng-init="activer = true" >
+                                        <input type="checkbox" class="js-switch"   ng-model="user.etat" />
+                                        <span ng-show="activer" ng-click="activer=false;"> Desactiver</span>
+                                        <span ng-hide="activer" ng-click="activer=true;">Activer</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--  // Prestataire-->
+                    <!-- Admin-->
+                    <div ng-show="showadmin">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-md-offset-2 col-sm-3 col-xs-12">Etat</label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="">
+                                    <label ng-init="activer = true" >
+                                        <input type="checkbox" class="js-switch"   ng-model="user.etat" />
+                                        <span ng-show="activer" ng-click="activer=false;"> Desactiver</span>
+                                        <span ng-hide="activer" ng-click="activer=true;">Activer</span>
+                                    </label>
+                                </div>
+                                <div class="">
+                                    <label ng-init="confirmer = true">
+                                        <input type="checkbox" class="js-switch"  ng-model="user.confirmer" />
+                                        <span ng-show="confirmer" ng-click="confirmer=false;"> Non-Confirmer</span>
+                                        <span ng-hide="confirmer" ng-click="confirmer=true;">Confirmer</span>
+                                    </label>
+                                </div>
+                                <div class="">
+                                    <label ng-init="dispo = true">
+                                        <input type="checkbox" class="js-switch"  ng-model="user.dispo" />
+                                        <span ng-show="dispo" ng-click="dispo=false;"> Non-Dispo</span>
+                                        <span ng-hide="dispo" ng-click="dispo=true;">Disponible</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  //Admin-->
+
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                            <button  class="btn btn-primary btn-sm" ng-click="deselect()">Cancel</button>
+                            <button  class="btn btn-success btn-sm" ng-click="createUser()">Submit</button>
+                            <button class="btn btn-info btn-sm" ng-click="updateUser()"> Update</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Plain Page</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Settings 1</a>
+                            </li>
+                            <li><a href="#">Settings 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label for="ex3">Show</label>
+                                <select class="form-control input-sm" ng-model="entries">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                entries
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6 " >
+                        <form class="form-inline">
+                            <div class="form-group pull-right">
+                                <label for="ex3">Search all columns:</label>
+                                <input type="text" id="ex3" class="form-contro input-sml" placeholder="" ng-model="searchTxt">
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div style="padding: 10px;"></div>
+                <div class="row">
+                    <table id="example" class="table table-striped responsive-utilities jambo_table">
+                        <thead>
+                        <tr class="headings">
+                            <th>
+                                <input type="checkbox" class="tableflat">
+                            </th>
+                            <th>Nom </th>
+                            <th colspan="2">Type</th>
+                            <th>email </th>
+                            <th>Date Debut </th>
+                            <th>Status </th>
+                            <th>Confirmer </th>
+                            <th class=" no-link last"><span class="nobr">Action</span>
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr ng-repeat="u in users | filter:searchTxt | limitTo:entries" >
+                            <td class="a-center ">
+                                <a href="" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                            </td>
+                            <td class=" "><i class="success fa fa-long-arrow-up"> &nbsp;</i>
+                                {{u.firstname}} {{u.lastname}}
+                            </td>
+                            <td class=" " ><span ng-repeat="v in u.typeUser">{{v}}</span></td>
+                            <td class=" " ><p ng-repeat="s in u.specialites"> <strong>{{s.name}}</strong><br/> </p></td>
+                            <td class=" ">{{u.email}} || {{u.password}}</td>
+                            <td class=" ">{{u.dateDebut  | date : format : timezone}}</td>
+                            <td class=" " ><span ng-repeat="v in u.statut">{{v}}</span></td>
+                            <td class="a-right a-right ">{{u.confirmer}}</td>
+                            <td class=" last"><a href="#">
+                                <a href="" class="btn btn-warning btn-xs" ng-click="editUser(u._id)"><i class="fa fa-pencil" ></i> Edit </a>
+                                <a href="" class="btn btn-danger btn-xs" ng-click="removeUser(u._id)"><i class="fa fa-trash-o" ></i> Delete </a></a>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                    <div class="row">
+                        <div class="dataTables_paginate paging_full_numbers" id="example_paginate">
+                            <a tabindex="0" class="first paginate_button paginate_button_disabled" id="example_first">First</a>
+                            <a tabindex="0" class="previous paginate_button paginate_button_disabled" id="example_previous">Previous</a>
+                                                <span>
+                                                    <a tabindex="0" class="paginate_active">1</a>
+                                                    <a tabindex="0" class="paginate_button">2</a>
+                                                    <a tabindex="0" class="paginate_button">3</a>
+                                                    <a tabindex="0" class="paginate_button">4</a>
+                                                </span>
+                            <a tabindex="0" class="next paginate_button" id="example_next">Next</a>
+                            <a tabindex="0" class="last paginate_button" id="example_last">Last</a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

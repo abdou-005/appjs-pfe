@@ -1,0 +1,91 @@
+
+
+
+
+<div class="col-md-12 col-xs-12">
+    <div class="col-md-6 col-xs-12">
+        <h4>Demande votre service</h4>
+        <form class="form-horizontal form-label-left" >
+            <div class="form-group">
+                <label class="control-label col-md-2 col-sm-2 col-xs-12">Devis <span class="required">*</span></label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Devis" name="devis" ng-model="devis.title" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 col-sm-2 col-xs-12">Domaine </label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <select name="spc" ng-model="domaine._id" class="form-control" ng-click="getSpecialites(domaine._id)" >
+                        <option value="{{d._id}}"  ng-repeat="d in domaines"  >{{d.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" ng-show="showSpec">
+                <label class="control-label col-md-2 col-sm-2 col-xs-12">Specialites</label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <select name="spc" ng-model="service.name" class="form-control"  >
+                        <option value="{{s.name}}"  ng-repeat="s in specialitesDom"  >{{s.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 col-sm-2 col-xs-12">Adresse <span class="required">*</span></label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Adresse" name="adresse" ng-model="adresseDevis.name" />
+                    <strong>OR</strong>
+                    <a href="#">autre</a>
+                </div>
+            </div>
+            <p>
+                <strong>Type : Express</strong>
+                <br/>
+                State : waiting
+            </p>
+            <p>{{messages}}</p>
+            <div class="ln_solid"></div>
+            <div class="form-group">
+                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                    <button  class="btn btn-default btn-sm" ng-click="setInformation()">Envoyer</button>
+                    <button  class="btn btn-info btn-sm" ng-click="deselect()">cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <h4>Conversation</h4>
+        <p style="color: red;">{{error_message}}</p>
+        <p style="color: green;">{{message}}</p>
+        <p>
+            Devis : {{devis}}
+            <br/>
+            Adresse : {{adresse}}
+            <br/>
+            Service : {{user}}
+        </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Contact</th>
+                        <th>Services</th>
+                        <th>Offre</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="u in listeUsers | filter:service.name" ng-if="u.typeUser=='artisan'">
+                        <td> {{u.typeUser}}</td>
+                        <td> {{u.email}}</td>
+                        <td>
+                            <strong ng-repeat=" s in u.specialites "> {{s.name}}</strong>
+                        </td>
+                        <td> ?</td>
+                        <td> <button  class="btn btn-default btn-sm" ng-click="">Confirmer</button>
+                            <button  class="btn btn-info btn-sm" ng-click="">cancel</button>
+                            </td>
+                    </tr>
+                </tbody>
+            </table>
+
+    </div>
+</div>

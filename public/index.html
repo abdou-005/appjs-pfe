@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>APP</title>
+    <!-- Bootstrap core CSS -->
+    <link href="ressources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="ressources/fonts/css/font-awesome.min.css" rel="stylesheet">
+    <link href="ressources/css/animate.min.css" rel="stylesheet">
+    <!-- Custom styling plus plugins -->
+    <link href="ressources/css/custom.css" rel="stylesheet">
+    <link href="ressources/css/icheck/flat/green.css" rel="stylesheet">
+
+    <!-- select2 -->
+    <link href="ressources/css/select/select2.min.css" rel="stylesheet">
+    <!-- switchery -->
+    <link rel="stylesheet" href="ressources/css/switchery/switchery.min.css" />
+
+    <!--[if lt IE 9]>
+    <script src="../assets/js/ie8-responsive-file-warning.js"></script>
+    <![endif]-->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!--
+     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+     -->
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- Holder JS -->
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmL_BRSaBvSM6HFDbu8Q6Q8iDBM5mXiDk"></script>
+    <!-- Modernizr
+    <script src="libs/modernizr/bin/modernizr"></script>
+    -->
+    <script src="ressources/js/jquery.min.js"></script>
+    <!-- Angular core components -->
+    <script type="text/javascript" src="src/vendors/angular/angular.js"></script>
+    <script type="text/javascript" src="src/vendors/angular-route/angular-route.js"></script>
+    <script type="text/javascript" src="libs/angular-socket-io/socket.js"></script>
+    <script src="libs/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
+    <!-- Initialize Angular App  -->
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="routing.js"></script>
+    <!-- Controllers-->
+    <script type="text/javascript" src="src/controllers/loginController.js"></script>
+    <script type="text/javascript" src="src/controllers/profil/profilClientController.js"></script>
+    <script type="text/javascript" src="src/controllers/profil/profilArtisanController.js"></script>
+    <script type="text/javascript" src="src/controllers/profil/profilAdminController.js"></script>
+    <script type="text/javascript" src="src/controllers/contentController.js"></script>
+    <script type="text/javascript" src="src/controllers/domaineController.js"></script>
+    <script type="text/javascript" src="src/controllers/homeController.js"></script>
+    <script type="text/javascript" src="src/controllers/navController.js"></script>
+    <script type="text/javascript" src="src/controllers/devis/demandeDevisController.js"></script>
+    <script type="text/javascript" src="src/controllers/devis/devisExpressController.js"></script>
+    <script type="text/javascript" src="src/controllers/devis/recueExpressController.js"></script>
+    <script type="text/javascript" src="src/controllers/notificationController.js"></script>
+    <script type="text/javascript" src="src/controllers/adresseController.js"></script>
+    <!-- Directives-->
+    <script type="text/javascript" src="src/directives/itemDecoratorDirective.js"></script>
+    <!-- Services-->
+    <script type="text/javascript" src="src/services/contentProvider.js"></script>
+    <script type="text/javascript" src="src/services/homeProvider.js"></script>
+    <script type="text/javascript" src="src/services/socketDevisFactory.js"></script>
+    <script type="text/javascript" src="src/services/devisProvider.js"></script>
+    <script type="text/javascript" src="src/services/gserviceFactory.js"></script>
+    <!-- Repositorys-->
+    <script type="text/javascript" src="src/repositorys/contentRepository.js"></script>
+    <script type="text/javascript" src="src/repositorys/homeRepository.js"></script>
+    <script type="text/javascript" src="src/repositorys/devisRepository.js"></script>
+</head>
+<body class="nav-md" ng-app="myApp"  ng-init="x= 'Hello';">
+<div class="container body" ng-show="authenticated">
+    <div class="main_container">
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="/users" class="site_title"><i class="fa fa-paw"></i> <span>Gentellela Alela!</span></a>
+                </div>
+                <div class="clearfix"></div>
+                <!-- menu prile quick info -->
+                <div class="profile">
+                    <div class="profile_pic">
+                        <img src="" alt="..." class="img-circle profile_img">
+                    </div>
+                    <div class="profile_info">
+                        <span>Welcome,</span>
+                        <h2> User</h2>
+                    </div>
+                </div>
+                <!-- /menu prile quick info -->
+                <br />
+                <!-- sidebar menu -->
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu" ng-controller="navController">
+                    <div class="menu_section">
+                        <h3>General</h3>
+                        <ul class="nav side-menu">
+                            <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li ng-class="{active : isActive('index.html')}"><a href="index.html">Dashboard</a>
+                                    </li>
+                                    <li ng-class="{active : isActive('/users')}"><a href="/users">Users</a>
+                                    </li>
+                                    <li ng-class="{active : isActive('/createAdresse')}"><a href="/createAdresse">Add Adresse</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li ng-show="isAdmin"><a><i class="fa fa-edit"></i> Contenus <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li ng-class="{active : isActive('/contents')}" ><a href="/contents">Contenu</a>
+                                    </li>
+                                    <li ng-class="{active : isActive('/domaine')}" ><a href="/domaine">Domaines</a>
+                                    </li>
+                                    <li ng-class="{active : isActive('/createSpec')}" ><a href="/createSpec">Create Spesc</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li ng-show="isAdmin"><a><i class="fa fa-desktop"></i> Utilisateurs <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li ng-class="{active : isActive('/users')}" ><a href="/users">Gerer</a>
+                                    </li>
+                                    <li><a href="#">Confirmer</a>
+                                    </li>
+                                    <li><a href="#">Typography</a>
+                                    </li>
+                                    <li><a href="#">Icons</a>
+                                    </li>
+                                    <li><a href="#">Glyphicons</a>
+                                    </li>
+                                    <li><a href="#">Widgets</a>
+                                    </li>
+                                    <li><a href="#">Invoice</a>
+                                    </li>
+                                    <li><a href="#">Inbox</a>
+                                    </li>
+                                    <li><a href="#">Calender</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li ng-show="isClient"><a><i class="fa fa-table"></i> Devis <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="#">List</a>
+                                    </li>
+                                    <li ng-class="{active : isActive('/demandeDevis')}" ><a href="/demandeDevis">Demande Devis</a>
+                                    </li>
+                                    <li ng-class="{active : isActive('/devisExpress')}" ><a href="/devisExpress">Devis Express</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li ng-show="isArtisan"><a><i class="fa fa-bar-chart-o"></i> Projet <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="#">Trouver Mission</a>
+                                    </li>
+                                    <li ng-class="{active : isActive('/recueExpress')}"><a href="/recueExpress">Devis Express</a>
+                                    </li>
+                                    <li><a href="#">Page Professionnelle</a>
+                                    </li>
+                                    <li><a href="#">ECharts </a>
+                                    </li>
+                                    <li><a href="#">Other Charts </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="menu_section">
+                        <h3>Live On</h3>
+                        <ul class="nav side-menu">
+                            <li><a><i class="fa fa-bug"></i> Trouver des Client <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="#">Zone</a>
+                                    </li>
+                                    <li><a href="#">Projects</a>
+                                    </li>
+                                    <li><a href="#">Project Detail</a>
+                                    </li>
+                                    <li><a href="#">Contacts</a>
+                                    </li>
+                                    <li><a href="#">Profile</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-windows"></i> Chercher un Prestataire <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="#">404 Error</a>
+                                    </li>
+                                    <li><a href="#">500 Error</a>
+                                    </li>
+                                    <li><a href="#">Plain Page</a>
+                                    </li>
+                                    <li><a href="#">Login Page</a>
+                                    </li>
+                                    <li><a href="#">Pricing Tables</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-laptop"></i> Landing Page <span class="label label-success pull-right">Coming Soon</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /sidebar menu -->
+                <!-- /menu footer buttons -->
+                <div class="sidebar-footer hidden-small">
+                    <a data-toggle="tooltip" data-placement="top" title="Settings">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                        <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="Lock">
+                        <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="Logout">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <!-- /menu footer buttons -->
+            </div>
+        </div>
+        <!-- top navigation -->
+        <div class="top_nav">
+            <div class="nav_menu">
+                <nav class="" role="navigation">
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ng-hide="authenticated"><a href="/login">Login</a> </li>
+                        <li ng-hide="authenticated"><a href="/register">register</a> </li>
+                        <li class="">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <img src="" alt=""> {{current_user.email}}
+                                <span class=" fa fa-angle-down"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
+                                <li ng-show="isAdmin">
+                                    <a href="/profilAdmin">Profile Admin</a>
+                                </li>
+                                <li ng-show="isArtisan">
+                                    <a href="/profilArtisan" >Profile Artisan</a>
+                                </li>
+                                <li ng-show="isClient">
+                                    <a href="/profilClient" >Profile Client</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">
+                                        <span class="badge bg-red pull-right">50%</span>
+                                        <span>Settings</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>Help</a>
+                                </li>
+                                <li><a href="index.html" ng-click="signout()"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- top navigation Notification ------------------------------------------------------------------------ -->
+                        <li role="presentation" class="dropdown" ng-show="true"  ng-controller="notificationCtrl">
+                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-envelope-o"></i>
+                                <span class="badge bg-green" ng-if="isArtisan">{{nbrNewDevis}}</span>
+                                <span class="badge bg-green" ng-if="isClient">{{nbrRecueDevis}}</span>
+                            </a>
+                            <ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
+                                <li ng-if="isArtisan" ng-repeat=" n in notificationNewDevis">
+                                    <a>
+                                        <span class="image">
+                                           <img src="ressources/images/img.jpg" alt="Profile Image" />
+                                        </span>
+                                                <span>
+                                                    <span>{{n.user.email}}</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                        <span class="message">
+                                            {{n.service}}
+                                        </span>
+                                    </a>
+                                </li>
+                                <li  ng-if="isClient" ng-repeat=" n in notificationRecueDevis">
+                                    <a>
+                                        <span class="image">
+                                           <img src="ressources/images/img.jpg" alt="Profile Image" />
+                                        </span>
+                                                <span>
+                                                    <span>{{n.user.email}}</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                        <span class="message">
+                                            {{n.service}}
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="text-center">
+                                        <a>
+                                            <strong>See All Alerts</strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <!-- //top navigation Notification ------------------------------------------------------------------------ -->
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+        <!-- /top navigation -->
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h3>Plain Page</h3>
+                    </div>
+                    <div class="title_right">
+                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search for...">
+                  <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row" >
+                    <div ng-view>
+
+                    </div>
+                </div>
+            </div>
+            <!-- footer content -->
+            <footer>
+                <div class="copyright-info">
+                    <p class="pull-right">Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                    </p>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+        <!-- /page content -->
+    </div>
+</div>
+<div id="custom_notifications" class="custom-notifications dsp_none" ng-show="authenticated">
+    <ul class="list-unstyled notifications clearfix" data-tabbed_notifications="notif-group">
+    </ul>
+    <div class="clearfix"></div>
+    <div id="notif-group" class="tabbed_notifications"></div>
+</div>
+<div class="" style="background:#F7F7F7;" ng-controller="loginCtrl" ng-hide="authenticated">
+    <a class="hiddenanchor" id="toregister"></a>
+    <a class="hiddenanchor" id="tologin"></a>
+    <br/>
+    <div class="row">
+        <div class="col-lg-6">
+            <p>{{user}}</p>
+        </div>
+        <div class="col-lg-6">
+            <p style="color: red;">{{error_message}}</p>
+            <p style="color: green;">{{message}}</p>
+        </div>
+    </div>
+    <div id="wrapper">
+        <div id="login" class="animate form">
+            <section class="login_content">
+                <form>
+                    <h1>Login Form</h1>
+                    <div>
+                        <input type="email" class="form-control" placeholder="Email" name="email" ng-model="user.email" required="" />
+                    </div>
+                    <div>
+                        <input type="password" class="form-control" placeholder="Password" name="password" ng-model="user.password" required="" />
+                    </div>
+                    <div>
+                        <button class="btn btn-default btn-sm" ng-click="getToken()">getToken</button>
+                        <button class="btn btn-default btn-sm" ng-click="loginUser()">Log in</button>
+                        <button class="btn btn-info btn-sm" ng-click="deselect()">cancel</button>
+                        <a class="reset_pass" href="#">Lost your password?</a>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="separator">
+                        <p class="change_link">New to site?
+                            <a href="#toregister" class="to_register"> Create Account </a>
+                        </p>
+                        <div class="clearfix"></div>
+                        <br />
+                        <div>
+                            <h1><i class="fa fa-paw" style="font-size: 26px;"></i> Gentelella Alela!</h1>
+                            <p>©2015 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                        </div>
+                    </div>
+                </form>
+                <!-- form -->
+            </section>
+            <!-- content -->
+        </div>
+        <div id="register" class="animate form">
+            <section class="login_content">
+                <form >
+                    <h1>Create Account</h1>
+                    <div>
+                        <input type="email" class="form-control" placeholder="Email"  name="email"  ng-model="user.email" />
+                    </div>
+                    <div>
+                        <input type="password" class="form-control" placeholder="Password"  name="password"  ng-model="user.password" />
+                    </div>
+                    <div ng-init=" showPrest=false; showClient = false;">
+                        <label for="client">
+                            <input type="radio" id="client" name="typeuser" ng-model="user.typeUser" value="client"  >
+                            <span ng-click="showClient = true; showPrest=false; showSpec=false;" >Client</span>
+                        </label>
+                        <label for="artisan">
+                            <input type="radio" id="artisan" name="typeuser" ng-model="user.typeUser" value="artisan" >
+                            <span ng-click="showClient = false; showPrest=true;">Prestataire</span>
+                        </label>
+                    </div>
+                    <div ng-init="showSpec = false" ng-show="showPrest">
+                        <select name="spc" ng-model = "domaine._id" class="form-control" ng-click="getSpecialites(domaine._id)" >
+                            <option value="">--Domaine--</option>
+                            <option value="{{d._id}}"  ng-repeat="d in domaines"  >{{d.name}}</option>
+                        </select>
+                    </div>
+                    <br/>
+                    <div ng-show="showSpec">
+                        <select name="multipleSelect" id="multipleSelect" class="form-control"  ng-model="user.specialites" multiple>
+                            <option value="{{s.name}}" ng-repeat="s in specialitesDom">{{s.name}}</option>
+                        </select>
+                    </div>
+                    <br/>
+                    <div class="clearfix"></div>
+                    <div>
+                        <button  class="btn btn-default btn-sm" ng-click="registerUser()">Signup</button>
+                        <button  class="btn btn-info btn-sm" ng-click="deselect()">cancel</button>
+                    </div>
+                    <div class="separator">
+                        <p class="change_link">Already a member ?
+                            <a href="#tologin" class="to_register"> Log in </a>
+                        </p>
+                        <div class="clearfix"></div>
+                        <br />
+                        <div>
+                            <h1><i class="fa fa-paw" style="font-size: 26px;"></i> Gentelella Alela!</h1>
+                            <p>©2015 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                        </div>
+                    </div>
+                </form>
+                <!-- form -->
+            </section>
+            <!-- content -->
+        </div>
+    </div>
+</div>
+<script src="ressources/js/bootstrap.min.js"></script>
+<!-- bootstrap progress js -->
+<script src="ressources/js/progressbar/bootstrap-progressbar.min.js"></script>
+<script src="ressources/js/nicescroll/jquery.nicescroll.min.js"></script>
+<!-- switchery -->
+<script src="ressources/js/switchery/switchery.min.js"></script>
+<script src="ressources/js/custom.js"></script>
+</body>
+</html>
