@@ -42,12 +42,13 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <div class="button" ngf-select="upload($file)">Upload on file select</div>
-                                    <div class="button" ngf-select="uploadFiles($files)" multiple="multiple">Upload on file select</div>
+                                    <!-- <div class="button" ngf-select="upload($file)">Upload on file select</div> -->
+                                    <div class="button" alt="" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'" accept="image/*">Upload on file select</div>
                                 </div>
                             </div>
                         </div>
                     </div>
+            <li ng-show="isArtisan">
                     <div class="col-md-6">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -76,32 +77,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-md-6 col-xs-12">
-                    <br/>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Specialites" ng-model="specialite.name">
-                                <span class="input-group-btn">
-                                            <button type="button" class="btn btn-primary" ng-click="createSpecialite()">+</button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12" ng-show="specialites">
-                
-                        <a ng-repeat="s in specialites" href="" class="btn btn-danger btn-xs" ng-click="removeSpecialite(s)">
-                            <i class="fa fa-trash-o" ></i> {{s.name}}
-                        </a>
-                    </div>
-                    <div class="col-md-12" ng-show="domaine.specialites">
-                        <hr/>
-                        <a ng-repeat="s in domaine.specialites" href="" class="btn btn-danger btn-xs" ng-click="removeSpecialiteDom(s,domaine)">
-                            <i class="fa fa-trash-o" ></i> {{s.name}}
-                        </a>
-                    </div>
-                </div>
-                 -->
+            </li>
+
                 <div class="clearfix"></div>
                 <div class="ln_solid"></div>
                 <div class="form-group">

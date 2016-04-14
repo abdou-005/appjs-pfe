@@ -75,6 +75,9 @@ app
 				if(resp.success){
 					$rootScope.authenticated = true;
 					$rootScope.current_user = resp.user;
+					var a = resp.user.medias.length;
+					console.log(a);
+					$rootScope.medias_profil = resp.user.medias[a-1];
 					$rootScope.token_current_user = resp.token;
 					console.log(resp.user.typeUser[0]);
 					socketDevisFactory.emit('new-client',$rootScope.current_user);

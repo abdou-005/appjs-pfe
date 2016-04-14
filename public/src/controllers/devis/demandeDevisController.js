@@ -62,6 +62,30 @@ app.controller('demandeDevisCtrl', ['Upload', '$scope', 'devisProvider', functio
             });
             refrechTous();
         };
+        /*$scope.submit = function(){ //function to call on form submit
+            if (file) { //check if from is valid
+                $scope.upload($scope.file); //call upload function
+            }
+        }
+        
+        $scope.upload = function (file) {
+            
+            if (file && files.length){
+                for (var i = 0; i < files.length; i++) {
+                    Upload.upload({
+                        url: '/demande',
+                        file: file
+                    }).progress(function(evt){
+                        console.log("firing");
+                    }).success(function(data){
+                        console.log(data);
+                    }).error(function(error){
+                        console.log(error);
+                    })
+                }
+            }
+
+        };*/
 
         $scope.removeOffreDevis = function(t,d){
             devisProvider.editDevis(d._id,function(data){
@@ -122,22 +146,9 @@ app.controller('demandeDevisCtrl', ['Upload', '$scope', 'devisProvider', functio
             $scope.offre = '';
         }
 
-        $scope.upload = function (file) {
-            Upload.upload({
-                url: 'upload/',
-                data: {file: file}
-            }).then(function (resp) {
-                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-            }, function (resp) {
-                console.log('Error status: ' + resp.status);
-            }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-            });
-        };
-
         
-         $scope.uploadFiles = function (files) {
+        
+         /*$scope.uploadFiles = function (files) {
             if (files && files.length) {
                 for (var i = 0; i < files.length; i++) {
                     Upload.upload({
@@ -153,5 +164,5 @@ app.controller('demandeDevisCtrl', ['Upload', '$scope', 'devisProvider', functio
                     }); 
                 }
             }
-        };
+        };*/
     }]);

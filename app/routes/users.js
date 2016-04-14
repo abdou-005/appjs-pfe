@@ -42,9 +42,7 @@ usersRoutes.route('/authenticate')
 					token: token
 				});
 			}
-
 		}
-
 	});
 });
 // route middleware to verify a token

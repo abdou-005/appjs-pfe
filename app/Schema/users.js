@@ -29,6 +29,8 @@ exports.schema= new mongoose.Schema({
 			globalMark : Number,
 			confirmer : Boolean,
 			dispo : Boolean,
+			pathImg: String,
+			nomImg: String,
 
 			prestations : [prestations.schema],
 			adresses : [adresses.schema],

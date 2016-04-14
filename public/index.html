@@ -64,6 +64,7 @@
     <script type="text/javascript" src="src/controllers/devis/recueExpressController.js"></script>
     <script type="text/javascript" src="src/controllers/notificationController.js"></script>
     <script type="text/javascript" src="src/controllers/adresseController.js"></script>
+
     <!-- Directives-->
     <script type="text/javascript" src="src/directives/itemDecoratorDirective.js"></script>
     <!-- Services-->
@@ -236,11 +237,15 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li ng-hide="authenticated"><a href="/login">Login</a> </li>
                         <li ng-hide="authenticated"><a href="/register">register</a> </li>
-                        <li class="">
+                        <li class="" data_ng-controller="profilClientCtrl">
+                            
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <img src="" alt=""> {{current_user.email}}
+                                <img src="{{medias_profil.urlMedia}}"  alt="" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'" accept="image/*"> {{current_user.email}} 
                                 <span class=" fa fa-angle-down"></span>
                             </a>
+                            <!-- <section data-ng-controller="profilClientCtrl">
+                                <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'" accept="image/*" >Select</div>
+                            </section> -->
                             <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
                                 <li ng-show="isAdmin">
                                     <a href="/profilAdmin">Profile Admin</a>
