@@ -4,7 +4,8 @@
 
 exports.schema = new mongoose.Schema({
 		message : String,
-		dateAdded : {type:Date, default: Date.now},
-		seen : Boolean
+		created_at: {type: Date, default: Date.now},
+		updated_at: {type: Date, default: Date.now},
+		seen : {type:Boolean, default :false}
 	}
 )

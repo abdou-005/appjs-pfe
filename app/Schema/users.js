@@ -7,13 +7,13 @@ var medias = require('./medias');
 var devis = require('./devis');
 var missions = require('./missions');
 var avis = require('./avis');
-
+var notifications = require('./notifications');
 
 
 exports.schema= new mongoose.Schema({
 			firstname:{type : String, maxlength:50},
 			lastname:{type : String, maxlength:50},
-			etat: Boolean,
+			etat: {type : Boolean, default:true},
 			code :{type:String},
 			email :{type:String, unique:true, required:true, lowercase: true},
 			password :{type:String, required:true},
@@ -28,19 +28,16 @@ exports.schema= new mongoose.Schema({
 			effectif :Number,
 			globalMark : Number,
 			confirmer : Boolean,
-			dispo : Boolean,
-			pathImg: String,
-			nomImg: String,
+			dispo : {type : Boolean, default:true},
 
+			notifications : [notifications.schema],
 			prestations : [prestations.schema],
 			adresses : [adresses.schema],
-			adresseDevis : adresses.schema,
 			specialites : [specialites.schema],
 			documents : [documents.schema],
 			medias : [medias.schema],
 			mediaProfil : medias.schema,
 			devis : [devis.schema],
-			devisExpress : devis.schema,
 			avis : [avis.schema],
 			missions : [missions.schema]
 	}

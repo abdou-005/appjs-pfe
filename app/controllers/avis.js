@@ -5,7 +5,7 @@ exports.index = function (req, res) {
 	var returnResponse = function(collection){
 		res.json(collection);
 	};
-	models.Avi.find({}).execAsync()
+	models.Avis.find({}).execAsync()
 		.then(logLib.logContent)
 		.then(returnResponse)
 	;
@@ -15,7 +15,7 @@ exports.one = function(req,res){
 	var returnResponse = function(obj){
 		res.json(obj);
 	};
-	models.Avi.findOneAsync(options)
+	models.Avis.findOneAsync(options)
 		.then(logLib.logContent)
 		.then(returnResponse)
 	;
@@ -28,12 +28,12 @@ exports.create = function(req,res){
 	var returnError = function(){
 		res.status(500).json({message : 'Problem'});
 	};
-	var avi = new models.Avi(req.body);
+	var avi = new models.Avis(req.body);
 	console.log(avi);
 	var noteGlobal = (avi.noteQualityServ + avi.notePriceServ + avi.noteRespectPeriod + avi.noteContact)/4;
 	avi.noteGlobal = noteGlobal;
 	console.log(avi);
-	models.Avi(avi).saveAsync()
+	models.Avis(avi).saveAsync()
 		.catch(logLib.throwError)
 		.then(logLib.logContent)
 		.done(returnResponse,returnError)
@@ -47,14 +47,14 @@ exports.update = function(req,res){
 
 	console.log(req.body);
 	var returnUpdateObject = function(){
-		models.Avi.findOneAsync(options)
+		models.Avis.findOneAsync(options)
 			.then(logLib.logContent)
 			.then(returnResponse)
 		;
 	};
 
 	delete req.body._id;
-	models.Avi.findOneAndUpdateAsync(options, req.body)
+	models.Avis.findOneAndUpdateAsync(options, req.body)
 		.then(returnUpdateObject)
 	;
 };
@@ -66,7 +66,7 @@ exports.delete = function(req,res){
 		res.status(500).json({message : 'Problem'});
 	};
 	var options = {_id:req.params.id};
-	models.Avi.findOneAndRemoveAsync(options)
+	models.Avis.findOneAndRemoveAsync(options)
 		.catch(logLib.throwError)
 		.done(returnResponse,returnError)
 	;

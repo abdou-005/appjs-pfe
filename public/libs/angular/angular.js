@@ -261,7 +261,7 @@ function isArrayLike(obj) {
   // "length" in obj used to prevent JIT error (gh-11508)
   var length = "length" in Object(obj) && obj.length;
 
-  // NodeList objects (with `domaine` method) and
+  // NodeList objects (with `item` method) and
   // other objects with suitable length characteristics are array-like
   return isNumber(length) &&
     (length >= 0 && ((length - 1) in obj || obj instanceof Array) || typeof obj.item == 'function');
@@ -275,7 +275,7 @@ function isArrayLike(obj) {
  * @kind function
  *
  * @description
- * Invokes the `iterator` function once for each domaine in `obj` collection, which can be either an
+ * Invokes the `iterator` function once for each item in `obj` collection, which can be either an
  * object or an array. The `iterator` function is invoked with `iterator(value, key, obj)`, where `value`
  * is the value of an object property or an array element, `key` is the object property key or
  * array element index and obj is the `obj` itself. Specifying a `context` for the function is optional.
@@ -1665,7 +1665,7 @@ function angularInit(element, bootstrap) {
  *
  * @param {DOMElement} element DOM element which is the root of angular application.
  * @param {Array<String|Function|Array>=} modules an array of modules to load into the application.
- *     Each domaine in the array should be the name of a predefined module or a (DI annotated)
+ *     Each item in the array should be the name of a predefined module or a (DI annotated)
  *     function that will be invoked by the injector as a `config` block.
  *     See: {@link angular.module modules}
  * @param {Object=} config an object for defining configuration options for the application. The
@@ -3934,7 +3934,7 @@ function annotate(fn, strictDi, name) {
  * By adding an `$inject` property onto a function the injection parameters can be specified.
  *
  * ## Inline
- * As an array of injection names, where the last domaine in the array is the function to call.
+ * As an array of injection names, where the last item in the array is the function to call.
  */
 
 /**
@@ -7973,7 +7973,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           var srcPattern = /(\s+\d+x\s*,|\s+\d+w\s*,|\s+,|,\s+)/;
           var pattern = /\s/.test(trimmedSrcset) ? srcPattern : /(,)/;
 
-          // split srcset into tuple of uri and descriptor except for the last domaine
+          // split srcset into tuple of uri and descriptor except for the last item
           var rawUris = trimmedSrcset.split(pattern);
 
           // for each tuples
@@ -7986,7 +7986,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             result += (" " + trim(rawUris[innerIdx + 1]));
           }
 
-          // split the last domaine into uri and descriptor
+          // split the last item into uri and descriptor
           var lastTuple = trim(rawUris[i * 2]).split(/\s/);
 
           // sanitize the last uri
@@ -17744,7 +17744,7 @@ function $SceDelegateProvider() {
     function isResourceUrlAllowedByPolicy(url) {
       var parsedUrl = urlResolve(url.toString());
       var i, n, allowed = false;
-      // Ensure that at least one domaine from the whitelist allows this url.
+      // Ensure that at least one item from the whitelist allows this url.
       for (i = 0, n = resourceUrlWhitelist.length; i < n; i++) {
         if (matchUrl(resourceUrlWhitelist[i], parsedUrl)) {
           allowed = true;
@@ -17752,7 +17752,7 @@ function $SceDelegateProvider() {
         }
       }
       if (allowed) {
-        // Ensure that no domaine from the blacklist blocked this url.
+        // Ensure that no item from the blacklist blocked this url.
         for (i = 0, n = resourceUrlBlacklist.length; i < n; i++) {
           if (matchUrl(resourceUrlBlacklist[i], parsedUrl)) {
             allowed = false;
@@ -19383,7 +19383,7 @@ function $FilterProvider($provide) {
  *     not containing "M".
  *
  *     Note that a named property will match properties on the same level only, while the special
- *     `$` property will match properties on the same level or deeper. E.g. an array domaine like
+ *     `$` property will match properties on the same level or deeper. E.g. an array item like
  *     `{name: {first: 'John', last: 'Doe'}}` will **not** be matched by `{name: 'John'}`, but
  *     **will** be matched by `{$: 'John'}`.
  *
@@ -22786,7 +22786,7 @@ var inputType = {
            </label><br/>
            <tt>color = {{color.name | json}}</tt><br/>
           </form>
-          Note that `ng-value="specialValue"` sets radio domaine's value to be the value of `$scope.specialValue`.
+          Note that `ng-value="specialValue"` sets radio item's value to be the value of `$scope.specialValue`.
         </file>
         <file name="protractor.js" type="protractor">
           it('should change state', function() {
@@ -25739,11 +25739,11 @@ var ngInitDirective = ngDirective({
  *
  * The behaviour of the directive is affected by the use of the `ngTrim` attribute.
  * * If `ngTrim` is set to `"false"` then whitespace around both the separator and each
- *   list domaine is respected. This implies that the user of the directive is responsible for
+ *   list item is respected. This implies that the user of the directive is responsible for
  *   dealing with whitespace but also allows you to use whitespace as a delimiter, such as a
  *   tab or newline character.
  * * Otherwise whitespace around the delimiter is ignored when splitting (although it is respected
- *   when joining the list items back together) and whitespace around each list domaine is stripped
+ *   when joining the list items back together) and whitespace around each list item is stripped
  *   before it is added to the model.
  *
  * ### Example with Validation
@@ -26806,7 +26806,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
  * if the select is given the `multiple` attribute.
  *
  * The `$watchCollection()` method only does a shallow comparison, meaning that changing properties deeper than the
- * first level of the object (or only changing the properties of an domaine in the collection if it's an array) will still
+ * first level of the object (or only changing the properties of an item in the collection if it's an array) will still
  * not trigger a re-rendering of the model.
  *
  * # CSS classes
@@ -27338,7 +27338,7 @@ var ngOptionsMinErr = minErr('ngOptions');
  *  to a non-string value. This is because an option element can only be bound to string values at
  * present.
  *
- * When an domaine in the `<select>` menu is selected, the array element or object property
+ * When an item in the `<select>` menu is selected, the array element or object property
  * represented by the selected option will be bound to the model identified by the `ngModel`
  * directive.
  *
@@ -27353,18 +27353,18 @@ var ngOptionsMinErr = minErr('ngOptions');
  *
  * One issue occurs if you want to preselect an option. For example, if you set
  * the model to an object that is equal to an object in your collection, `ngOptions` won't be able to set the selection,
- * because the objects are not identical. So by default, you should always reference the domaine in your collection
+ * because the objects are not identical. So by default, you should always reference the item in your collection
  * for preselections, e.g.: `$scope.selected = $scope.collection[3]`.
  *
  * Another solution is to use a `track by` clause, because then `ngOptions` will track the identity
- * of the domaine not by reference, but by the result of the `track by` expression. For example, if your
- * collection items have an id property, you would `track by domaine.id`.
+ * of the item not by reference, but by the result of the `track by` expression. For example, if your
+ * collection items have an id property, you would `track by item.id`.
  *
  * A different issue with objects or collections is that ngModel won't detect if an object property or
- * a collection domaine changes. For that reason, `ngOptions` additionally watches the model using
+ * a collection item changes. For that reason, `ngOptions` additionally watches the model using
  * `$watchCollection`, when the expression contains a `track by` clause or the the select has the `multiple` attribute.
  * This allows ngOptions to trigger a re-rendering of the options even if the actual object/collection
- * has not changed identity, but only a property on the object or an domaine in the collection changes.
+ * has not changed identity, but only a property on the object or an item in the collection changes.
  *
  * Note that `$watchCollection` does a shallow comparison of the properties of the object (or the items in the collection
  * if the model is an array). This means that changing a property deeper than the first level inside the
@@ -27401,7 +27401,7 @@ var ngOptionsMinErr = minErr('ngOptions');
  * This will work:
  *
  * ```html
- * <select ng-options="domaine as domaine.label for domaine in items track by domaine.id" ng-model="selected"></select>
+ * <select ng-options="item as item.label for item in items track by item.id" ng-model="selected"></select>
  * ```
  * ```js
  * $scope.selected = $scope.items[0];
@@ -27410,13 +27410,13 @@ var ngOptionsMinErr = minErr('ngOptions');
  * but this will not work:
  *
  * ```html
- * <select ng-options="domaine.subItem as domaine.label for domaine in items track by domaine.id" ng-model="selected"></select>
+ * <select ng-options="item.subItem as item.label for item in items track by item.id" ng-model="selected"></select>
  * ```
  * ```js
  * $scope.selected = $scope.items[0].subItem;
  * ```
  *
- * In both examples, the **`track by`** expression is applied successfully to each `domaine` in the
+ * In both examples, the **`track by`** expression is applied successfully to each `item` in the
  * `items` array. Because the selected option has been set programmatically in the controller, the
  * **`track by`** expression is also applied to the `ngModel` value. In the first example, the
  * `ngModel` value is `items[0]` and the **`track by`** expression evaluates to `items[0].id` with
@@ -27455,7 +27455,7 @@ var ngOptionsMinErr = minErr('ngOptions');
  * Where:
  *
  *   * `array` / `object`: an expression which evaluates to an array / object to iterate over.
- *   * `value`: local variable which will refer to each domaine in the `array` or each property value
+ *   * `value`: local variable which will refer to each item in the `array` or each property value
  *      of `object` during iteration.
  *   * `key`: local variable which will refer to a property name in `object` during iteration.
  *   * `label`: The result of this expression will be the label for `<option>` element. The
@@ -27552,9 +27552,9 @@ var NG_OPTIONS_REGEXP = /^\s*([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+group\s+by\s
                         // 2: label expression (displayFn)
                         // 3: group by expression (groupByFn)
                         // 4: disable when expression (disableWhenFn)
-                        // 5: array domaine variable name
-                        // 6: object domaine key variable name
-                        // 7: object domaine value variable name
+                        // 5: array item variable name
+                        // 6: object item key variable name
+                        // 7: object item value variable name
                         // 8: collection expression
                         // 9: track by expression
 // jshint maxlen: 100
@@ -27575,9 +27575,9 @@ var ngOptionsDirective = ['$compile', '$parse', function($compile, $parse) {
 
     // Extract the parts from the ngOptions expression
 
-    // The variable name for the value of the domaine in the collection
+    // The variable name for the value of the item in the collection
     var valueName = match[5] || match[7];
-    // The variable name for the key of the domaine in the collection
+    // The variable name for the key of the item in the collection
     var keyName = match[6];
 
     // An expression that generates the viewValue for an option if there is a label expression
@@ -28325,9 +28325,9 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  * @multiElement
  *
  * @description
- * The `ngRepeat` directive instantiates a template once per domaine from a collection. Each template
- * instance gets its own scope, where the given loop variable is set to the current collection domaine,
- * and `$index` is set to the domaine index or key.
+ * The `ngRepeat` directive instantiates a template once per item from a collection. Each template
+ * instance gets its own scope, where the given loop variable is set to the current collection item,
+ * and `$index` is set to the item index or key.
  *
  * Special properties are exposed on the local scope of each template instance, including:
  *
@@ -28381,13 +28381,13 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  * `ngRepeat` uses {@link $rootScope.Scope#$watchCollection $watchCollection} to detect changes in
  * the collection. When a change happens, ngRepeat then makes the corresponding changes to the DOM:
  *
- * * When an domaine is added, a new instance of the template is added to the DOM.
- * * When an domaine is removed, its template instance is removed from the DOM.
+ * * When an item is added, a new instance of the template is added to the DOM.
+ * * When an item is removed, its template instance is removed from the DOM.
  * * When items are reordered, their respective templates are reordered in the DOM.
  *
  * To minimize creation of DOM elements, `ngRepeat` uses a function
  * to "keep track" of all items in the collection and their corresponding DOM elements.
- * For example, if an domaine is added to the collection, ngRepeat will know that all other items
+ * For example, if an item is added to the collection, ngRepeat will know that all other items
  * already have DOM elements, and will not re-render them.
  *
  * The default tracking function (which tracks items by their identity) does not allow
@@ -28397,7 +28397,7 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  * If you do need to repeat duplicate items, you can substitute the default tracking behavior
  * with your own using the `track by` expression.
  *
- * For example, you may track items by the index of each domaine in the collection, using the
+ * For example, you may track items by the index of each item in the collection, using the
  * special scope property `$index`:
  * ```html
  *    <div ng-repeat="n in [42, 42, 43, 43] track by $index">
@@ -28452,14 +28452,14 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  *
  * The example below makes use of this feature:
  * ```html
- *   <header ng-repeat-start="domaine in items">
- *     Header {{ domaine }}
+ *   <header ng-repeat-start="item in items">
+ *     Header {{ item }}
  *   </header>
  *   <div class="body">
- *     Body {{ domaine }}
+ *     Body {{ item }}
  *   </div>
  *   <footer ng-repeat-end>
- *     Footer {{ domaine }}
+ *     Footer {{ item }}
  *   </footer>
  * ```
  *
@@ -28491,9 +28491,9 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  * @animations
  * | Animation                        | Occurs                              |
  * |----------------------------------|-------------------------------------|
- * | {@link ng.$animate#enter enter} | when a new domaine is added to the list or when an domaine is revealed after a filter |
- * | {@link ng.$animate#leave leave} | when an domaine is removed from the list or when an domaine is filtered out |
- * | {@link ng.$animate#move move } | when an adjacent domaine is filtered out causing a reorder or when the domaine contents are reordered |
+ * | {@link ng.$animate#enter enter} | when a new item is added to the list or when an item is revealed after a filter |
+ * | {@link ng.$animate#leave leave} | when an item is removed from the list or when an item is filtered out |
+ * | {@link ng.$animate#move move } | when an adjacent item is filtered out causing a reorder or when the item contents are reordered |
  *
  * See the example below for defining CSS animations with ngRepeat.
  *
@@ -28521,32 +28521,32 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  *
  *     Note that the tracking expression must come last, after any filters, and the alias expression.
  *
- *     For example: `domaine in items` is equivalent to `domaine in items track by $id(domaine)`. This implies that the DOM elements
- *     will be associated by domaine identity in the array.
+ *     For example: `item in items` is equivalent to `item in items track by $id(item)`. This implies that the DOM elements
+ *     will be associated by item identity in the array.
  *
- *     For example: `domaine in items track by $id(domaine)`. A built in `$id()` function can be used to assign a unique
- *     `$$hashKey` property to each domaine in the array. This property is then used as a key to associated DOM elements
- *     with the corresponding domaine in the array by identity. Moving the same object in array would move the DOM
+ *     For example: `item in items track by $id(item)`. A built in `$id()` function can be used to assign a unique
+ *     `$$hashKey` property to each item in the array. This property is then used as a key to associated DOM elements
+ *     with the corresponding item in the array by identity. Moving the same object in array would move the DOM
  *     element in the same way in the DOM.
  *
- *     For example: `domaine in items track by domaine.id` is a typical pattern when the items come from the database. In this
+ *     For example: `item in items track by item.id` is a typical pattern when the items come from the database. In this
  *     case the object identity does not matter. Two objects are considered equivalent as long as their `id`
  *     property is same.
  *
- *     For example: `domaine in items | filter:searchText track by domaine.id` is a pattern that might be used to apply a filter
+ *     For example: `item in items | filter:searchText track by item.id` is a pattern that might be used to apply a filter
  *     to items in conjunction with a tracking expression.
  *
  *   * `variable in expression as alias_expression` – You can also provide an optional alias expression which will then store the
  *     intermediate results of the repeater after the filters have been applied. Typically this is used to render a special message
  *     when a filter is active on the repeater, but the filtered result set is empty.
  *
- *     For example: `domaine in items | filter:x as results` will store the fragment of the repeated items as `results`, but only after
+ *     For example: `item in items | filter:x as results` will store the fragment of the repeated items as `results`, but only after
  *     the items have been processed through the filter.
  *
  *     Please note that `as [variable name] is not an operator but rather a part of ngRepeat micro-syntax so it can be used only at the end
  *     (and not as operator, inside an expression).
  *
- *     For example: `domaine in items | filter : x | orderBy : order | limitTo : limit as results` .
+ *     For example: `item in items | filter : x | orderBy : order | limitTo : limit as results` .
  *
  * @example
  * This example uses `ngRepeat` to display a list of people. A filter is used to restrict the displayed
@@ -28731,7 +28731,7 @@ var ngRepeatDirective = ['$parse', '$animate', '$compile', function($parse, $ani
           };
         }
 
-        // Store a list of elements from previous run. This is a hash where key is the domaine from the
+        // Store a list of elements from previous run. This is a hash where key is the item from the
         // iterator, and the value is objects with following properties.
         //   - scope: bound scope
         //   - element: previous element.
@@ -28839,13 +28839,13 @@ var ngRepeatDirective = ['$parse', '$animate', '$compile', function($parse, $ani
               } while (nextNode && nextNode[NG_REMOVED]);
 
               if (getBlockStart(block) != nextNode) {
-                // existing domaine which got moved
+                // existing item which got moved
                 $animate.move(getBlockNodes(block.clone), null, previousNode);
               }
               previousNode = getBlockEnd(block);
               updateScope(block.scope, index, valueIdentifier, value, keyIdentifier, key, collectionLength);
             } else {
-              // new domaine which we don't know about
+              // new item which we don't know about
               $transclude(function ngRepeatTransclude(clone, scope) {
                 block.scope = scope;
                 // http://jsperf.com/clone-vs-createcomment
@@ -28900,7 +28900,7 @@ var NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
  *
  * You may be wondering why !important is used for the `.ng-hide` CSS class. This is because the `.ng-hide` selector
  * can be easily overridden by heavier selectors. For example, something as simple
- * as changing the display style on a HTML list domaine would make hidden elements appear visible.
+ * as changing the display style on a HTML list item would make hidden elements appear visible.
  * This also becomes a bigger issue when dealing with CSS frameworks.
  *
  * By using !important, the show and hide behavior will work as expected despite any clash between CSS selector
@@ -29076,7 +29076,7 @@ var ngShowDirective = ['$animate', function($animate) {
  *
  * You may be wondering why !important is used for the `.ng-hide` CSS class. This is because the `.ng-hide` selector
  * can be easily overridden by heavier selectors. For example, something as simple
- * as changing the display style on a HTML list domaine would make hidden elements appear visible.
+ * as changing the display style on a HTML list item would make hidden elements appear visible.
  * This also becomes a bigger issue when dealing with CSS frameworks.
  *
  * By using !important, the show and hide behavior will work as expected despite any clash between CSS selector
@@ -29324,7 +29324,7 @@ var ngStyleDirective = ngDirective(function(scope, element, attr) {
   <example module="switchExample" deps="angular-animate.js" animations="true">
     <file name="index.html">
       <div ng-controller="ExampleController">
-        <select ng-model="selection" ng-options="domaine for domaine in items">
+        <select ng-model="selection" ng-options="item for item in items">
         </select>
         <code>selection={{selection}}</code>
         <hr/>
@@ -29868,7 +29868,7 @@ var SelectController =
  * It also handles dynamic `<option>` elements, which can be added using the {@link ngRepeat `ngRepeat}` or
  * {@link ngOptions `ngOptions`} directives.
  *
- * When an domaine in the `<select>` menu is selected, the value of the selected option will be bound
+ * When an item in the `<select>` menu is selected, the value of the selected option will be bound
  * to the model identified by the `ngModel` directive. With static or repeated options, this is
  * the content of the `value` attribute or the textContent of the `<option>`, if the value attribute is missing.
  * If you want dynamic value attributes, you can use interpolation inside the value attribute.
@@ -30082,7 +30082,7 @@ var selectDirective = function() {
 
       selectCtrl.ngModelCtrl = ngModelCtrl;
 
-      // When the selected domaine(s) changes we delegate getting the value of the select control
+      // When the selected item(s) changes we delegate getting the value of the select control
       // to the `readValue` method, which can be changed if the select can have multiple
       // selected values or if the options are being generated by `ngOptions`
       element.on('change', function() {
@@ -30094,7 +30094,7 @@ var selectDirective = function() {
       // If the select allows multiple values then we need to modify how we read and write
       // values from and to the control; also what it means for the value to be empty and
       // we have to add an extra watch since ngModel doesn't work well with arrays - it
-      // doesn't trigger rendering if only an domaine in the array changes.
+      // doesn't trigger rendering if only an item in the array changes.
       if (attr.multiple) {
 
         // Read value now needs to check each option to see if it is selected

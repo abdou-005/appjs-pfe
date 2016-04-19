@@ -1,14 +1,12 @@
 var express = require('express');
 var demanderDevis = require('../controllers/demanderDevis');
-var multipart = require('connect-multiparty');
-var multipartMiddleware = multipart();
 
 
 var devisRoutes = express.Router();
 
 devisRoutes.route('/demande')
 	.get(demanderDevis.index)
-	.post(multipartMiddleware, demanderDevis.create)
+	.post(demanderDevis.create)
 	.put(demanderDevis.update);
 
 devisRoutes.route('/demande/:id')

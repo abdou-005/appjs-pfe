@@ -1,91 +1,268 @@
 
 
-
-
-<div class="col-md-12 col-xs-12">
-    <div class="col-md-6 col-xs-12">
-        <h4>Demande votre service</h4>
-        <form class="form-horizontal form-label-left" >
-            <div class="form-group">
-                <label class="control-label col-md-2 col-sm-2 col-xs-12">Devis <span class="required">*</span></label>
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                    <input type="text" class="form-control" placeholder="Devis" name="devis" ng-model="devis.title" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2 col-sm-2 col-xs-12">Domaine </label>
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                    <select name="spc" ng-model="domaine._id" class="form-control" ng-click="getSpecialites(domaine._id)" >
-                        <option value="{{d._id}}"  ng-repeat="d in domaines"  >{{d.name}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group" ng-show="showSpec">
-                <label class="control-label col-md-2 col-sm-2 col-xs-12">Specialites</label>
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                    <select name="spc" ng-model="service.name" class="form-control"  >
-                        <option value="{{s.name}}"  ng-repeat="s in specialitesDom"  >{{s.name}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2 col-sm-2 col-xs-12">Adresse <span class="required">*</span></label>
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                    <input type="text" class="form-control" placeholder="Adresse" name="adresse" ng-model="adresseDevis.name" />
-                    <strong>OR</strong>
-                    <a href="#">autre</a>
-                </div>
-            </div>
-            <p>
-                <strong>Type : Express</strong>
-                <br/>
-                State : waiting
-            </p>
-            <p>{{messages}}</p>
-            <div class="ln_solid"></div>
-            <div class="form-group">
-                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                    <button  class="btn btn-default btn-sm" ng-click="setInformation()">Envoyer</button>
-                    <button  class="btn btn-info btn-sm" ng-click="deselect()">cancel</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="col-md-6 col-xs-12">
-        <h4>Conversation</h4>
+<div class="container">
+    <div class="row">
         <p style="color: red;">{{error_message}}</p>
         <p style="color: green;">{{message}}</p>
-        <p>
-            Devis : {{devis}}
-            <br/>
-            Adresse : {{adresse}}
-            <br/>
-            Service : {{user}}
-        </p>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Contact</th>
-                        <th>Services</th>
-                        <th>Offre</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="u in listeUsers | filter:service.name" ng-if="u.typeUser=='artisan'">
-                        <td> {{u.typeUser}}</td>
-                        <td> {{u.email}}</td>
-                        <td>
-                            <strong ng-repeat=" s in u.specialites "> {{s.name}}</strong>
-                        </td>
-                        <td> ?</td>
-                        <td> <button  class="btn btn-default btn-sm" ng-click="">Confirmer</button>
-                            <button  class="btn btn-info btn-sm" ng-click="">cancel</button>
-                            </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="col-md-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Plain Page</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Settings 1</a>
+                                </li>
+                                <li><a href="#">Settings 2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12">
+                            <h4>Demande votre service</h4>
+                            <form class="form-horizontal form-label-left" >
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12">Devis <span class="required">*</span></label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input type="text" class="form-control" placeholder="Devis" name="devis" ng-model="devis.title" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12">Domaine </label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <select name="spc" ng-model="domaine._id" class="form-control" ng-click="getSpecialites(domaine._id)" >
+                                            <option value="{{d._id}}"  ng-repeat="d in domaines"  >{{d.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="showSpec">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12">Specialites</label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <select name="spc" ng-model="service.name" class="form-control"  >
+                                            <option value="{{s.name}}"  ng-repeat="s in specialitesDom"  >{{s.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12">Adresse <span class="required">*</span></label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label >
+                                            <input type="checkbox" class="js-switch" ng-disabled="true" checked />
+                                            <span>Default</span>
+                                        </label>
+                                        <strong>OU</strong>
+                                        <a href="/createAdresse">autre</a>
+                                    </div>
+                                </div>
+                                <p>
+                                    <strong>Type : Express</strong>
+                                    <br/>
+                                    State : waiting
+                                </p>
+                                <p>{{messages}}</p>
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                        <button  class="btn btn-default btn-sm" ng-click="setInformation()">Envoyer</button>
+                                        <button  class="btn btn-info btn-sm" ng-click="deselect()">cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6 col-xs-12">
+                            <h4>Conversation</h4>
+                            <p style="color: red;">{{error_message}}</p>
+                            <p style="color: green;">{{message}}</p>
+                            <p>
+                                Devis : {{devis}}
+                                <br/>
+                                Adresse : {{adresseDevis}}
+                                <br/>
+                                Service : {{service}}
+                            </p>
+                            <h4>Liste Prestataire </h4>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Contact</th>
+                                    <th>Services</th>
+                                    <th>Offre</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="u in listeUsers | filter:service.name" ng-if="u.typeUser=='artisan'">
+                                    <td> {{u.typeUser}}</td>
+                                    <td> {{u.email}}</td>
+                                    <td>
+                                        <strong ng-repeat=" s in u.specialites "> {{s.name}}</strong>
+                                    </td>
+                                    <td> ?</td>
+                                    <td> <button  class="btn btn-default btn-sm" ng-click="">Confirmer</button>
+                                        <button  class="btn btn-info btn-sm" ng-click="">cancel</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4>Liste Devis </h4>
+                        <div class="col-md-6">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label for="ex3">Show</label>
+                                    <select class="form-control input-sm" ng-model="entries">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    entries
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6 " >
+                            <form class="form-inline">
+                                <div class="form-group pull-right">
+                                    <label for="ex3">Search all columns:</label>
+                                    <input type="text" id="ex3" class="form-contro input-sml" placeholder="" ng-model="searchTxt">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;"></div>
+                    <div class="row" ng-show="showPrestataire">
+                        <div class="col-md-12">
+                            <div class="col-md-4 col-sm-4 col-xs-12 animated fadeInDown">
+                                <div class="well profile_view">
+                                    <div class="col-sm-12">
+                                        <h4 class="brief"><i>Digital Strategist</i></h4>
+                                        <div class="left col-xs-7">
+                                            <h2>{{prestataire.firstname}} {{prestataire.lastname}} </h2>
+                                            <p><strong>About: </strong> <span ng-repeat="spec in prestataire.specialites">{{spec.name}} /</span> </p>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-phone"></i> Address: </li>
+                                                <li><i class="fa fa-phone"></i> Address: </li>
 
+                                            </ul>
+                                        </div>
+                                        <div class="right col-xs-5 text-center">
+                                            <img src="ressources/images/img.jpg" alt="" class="img-circle img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 bottom text-center">
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <p class="ratings">
+                                                <a>4.0</a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star-o"></span></a>
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <button type="button" class="btn btn-success btn-xs" ng-click="showPrestataire = false;"> <i class="fa fa-user">
+                                            </i> <i class="fa fa-comments-o"></i> </button>
+                                            <button type="button" class="btn btn-primary btn-xs"> <i class="fa fa-user">
+                                            </i> View Profile </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="example" class="table table-striped responsive-utilities jambo_table">
+                                <thead>
+                                <tr class="headings">
+                                    <th>
+                                        <button class="btn btn-default btn-xs" ng-click="refreshMap()"><span class="glyphicon glyphicon-refresh"></span></button>
+                                    </th>
+                                    <th>Title</th>
+                                    <th>date Ajout</th>
+                                    <th>debut</th>
+                                    <th>etat</th>
+                                    <th>type</th>
+                                    <th>adresse</th>
+                                    <th>Offre</th>
+                                    <th class=" no-link last"><span class="nobr">Action</span>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="d in current_user.devis | filter:searchTxt | limitTo:entries">
+                                    <td class="a-center ">
+                                        <a href="" class="btn btn-primary btn-xs active"><i class="fa fa-folder"></i> View </a>
+                                    </td>
+                                    <td class=" "> {{d.title}}</td>
+                                    <td class=" "> {{d.created_at | date : format : timezone}}</td>
+                                    <td class=" ">{{d.dateWork | date : format : timezone}}</td>
+                                    <td class=" ">{{d.state}}</td>
+                                    <td class=" ">{{d.type}}</td>
+                                    <td class=" ">
+                                        <div id="map{{d._id}}" style="width:150px; height:150px"></div>
+                                        <strong>{{d.adresseDevis.lieu}}</strong>
+                                    </td >
+                                    <td class=" ">
+                                        <a href="#" >  <strong> {{d.offres.length}} </strong> Offre(s)</a>
+                                        <p ng-repeat=" offre in d.offres" >
+
+                                            <a href="#" ng-click="getPrestataire(offre.prestataireId)">Prestataire  = {{offre.prestataireId}} </a>
+                                            <br/>
+                                            <span>Title : {{offre.title}}</span>
+                                            <br/>
+                                            <span>Description : {{offre.desc}}</span>
+                                            <br/>
+                                            <a href="#" ><strong> {{offre.questions.length}} </strong> Question(s) </a>
+                                            <br/>
+                                                <span ng-repeat="question in offre.questions">
+                                                    <span>{{question.contents}}</span> <br/>
+                                                </span>
+                                            <input type="text" class="form-control" placeholder="Questions"  id="quest{{offre._id}}" />
+                                            <button  class="btn btn-default btn-sm" ng-click="createQuestion(d,offre)">Envoyer</button>
+                                        </p>
+                                    </td>
+                                    <td class=" last">
+                                        <a href="" class="btn btn-warning btn-xs" ng-click=""><i class="fa fa-pencil" ></i> Edit </a>
+                                        <a href="" class="btn btn-danger btn-xs" ng-click="deleteDevis(d)"><i class="fa fa-trash-o" ></i> Delete </a></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="dataTables_paginate paging_full_numbers" id="example_paginate">
+                                <a tabindex="0" class="first paginate_button paginate_button_disabled" id="example_first">First</a>
+                                <a tabindex="0" class="previous paginate_button paginate_button_disabled" id="example_previous">Previous</a>
+                                                <span>
+                                                    <a tabindex="0" class="paginate_active">1</a>
+                                                    <a tabindex="0" class="paginate_button">2</a>
+                                                    <a tabindex="0" class="paginate_button">3</a>
+                                                    <a tabindex="0" class="paginate_button">4</a>
+                                                </span>
+                                <a tabindex="0" class="next paginate_button" id="example_next">Next</a>
+                                <a tabindex="0" class="last paginate_button" id="example_last">Last</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+

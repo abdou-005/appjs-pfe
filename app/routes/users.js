@@ -42,7 +42,9 @@ usersRoutes.route('/authenticate')
 					token: token
 				});
 			}
+
 		}
+
 	});
 });
 // route middleware to verify a token
@@ -82,6 +84,9 @@ usersRoutes.route('/')
 	.post(users.create)
 	.put(users.update);
 
+
+usersRoutes.route('/addDevisExpress')
+	.put(users.addDevisExpress);
 
 usersRoutes.route('/:id')
 	.get(users.one)

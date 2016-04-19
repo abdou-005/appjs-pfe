@@ -1,19 +1,24 @@
 
 'use strict';
+app
+	.controller('demandeDevisCtrl',function($scope ,devisProvider,socketDevisFactory){
 
-app.controller('demandeDevisCtrl', ['Upload', '$scope', 'devisProvider', function(Upload, $scope,devisProvider){
+        $scope.messages = [];
 
+        socketDevisFactory.on('message',function(data){
+           $scope.messages.push(data.message);
+        });
 
-        var refrechTous = function(){
+		var refrechTous = function(){
             devisProvider.getDevis(function(data){
                 $scope.devis = data;
-                $scope.devi = '';
                 $scope.title = '';
                 $scope.contents = '';
-                $scope.state= '';
+                $scope.state = '';
                 $scope.type= '';
-                $scope.offres = '';
-                $scope.image = '';
+                $scope.specialite= '';
+                $scope.offres= '';
+                $scope.mission= '';
             });
 
          };
@@ -38,7 +43,6 @@ app.controller('demandeDevisCtrl', ['Upload', '$scope', 'devisProvider', functio
             console.log($scope.offres);
         };
 
-        
         $scope.removeOffre = function(t){
             console.log(t);
             for(var offre in $scope.offres){
@@ -47,45 +51,19 @@ app.controller('demandeDevisCtrl', ['Upload', '$scope', 'devisProvider', functio
                 }
             }
         };
-
-        
-       
         $scope.createDevis = function(){
-            console.log($scope.devi);
+            console.log($scope.devis);
             console.log($scope.offres);
-            $scope.devi.offres = $scope.offres;
-           console.log('--------------');
-            console.log($scope.devi);
+            $scope.devis.offres = $scope.offres;
+            //$scope.domaine.specialites = $scope.specialites;
             console.log('--------------');
-            devisProvider.createDevis($scope.devi,function(data){
+            console.log($scope.devis);
+            console.log('--------------');
+            devisProvider.createDevis($scope.devis,function(data){
                 console.log('data =',data);
             });
             refrechTous();
         };
-        /*$scope.submit = function(){ //function to call on form submit
-            if (file) { //check if from is valid
-                $scope.upload($scope.file); //call upload function
-            }
-        }
-        
-        $scope.upload = function (file) {
-            
-            if (file && files.length){
-                for (var i = 0; i < files.length; i++) {
-                    Upload.upload({
-                        url: '/demande',
-                        file: file
-                    }).progress(function(evt){
-                        console.log("firing");
-                    }).success(function(data){
-                        console.log(data);
-                    }).error(function(error){
-                        console.log(error);
-                    })
-                }
-            }
-
-        };*/
 
         $scope.removeOffreDevis = function(t,d){
             devisProvider.editDevis(d._id,function(data){
@@ -98,14 +76,13 @@ app.controller('demandeDevisCtrl', ['Upload', '$scope', 'devisProvider', functio
                 }
                 devisProvider.updateDevis(data,function(data){
                     console.log('data = ',data);
-                    $scope.devi = data;
+                    $scope.devis = data;
                 });
                 refrech();
             });
 
         };
 
-        
         $scope.removeDevis = function(id){
             devisProvider.removeDevis(id,function(data){
                 console.log('data = ',data);
@@ -115,10 +92,10 @@ app.controller('demandeDevisCtrl', ['Upload', '$scope', 'devisProvider', functio
 
         $scope.editDevis = function(id){
             console.log('Object ID = ',id);
-            console.log('scope.c = ',$scope.devi);
+            console.log('scope.c = ',$scope.devis);
             devisProvider.editDevis(id,function(data){
                 console.log('data = ',data);
-                $scope.devi = data;
+                $scope.devis = data;
             });
 
         };
@@ -126,43 +103,21 @@ app.controller('demandeDevisCtrl', ['Upload', '$scope', 'devisProvider', functio
         $scope.updateDevis = function(){
             if($scope.offres){
                 for(var t in $scope.offres){
-                    $scope.devi.offres.push($scope.offres[t]);
+                    $scope.devis.offres.push($scope.offres[t]);
                 }
                 $scope.offres = '';
             }
-            
-            devisProvider.updateDevis($scope.devi,function(data){
+            devisProvider.updateDevis($scope.devis,function(data){
                 console.log('data = ',data);
-                $scope.devi = data;
+                $scope.devis = data;
             });
             refrech();
         };
 
         $scope.deselect = function(){
-            $scope.devi = '';
+            $scope.devis = '';
         }
 
-        $scope.cancel = function(){
-            $scope.offre = '';
-        }
+	});
 
-        
-        
-         /*$scope.uploadFiles = function (files) {
-            if (files && files.length) {
-                for (var i = 0; i < files.length; i++) {
-                    Upload.upload({
-                        url: 'upload/',
-                        data: {file: files[i]}
-                    }).then(function (resp) {
-                        console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-                    }, function (resp) {
-                        console.log('Error status: ' + resp.status);
-                    }, function (evt) {
-                        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-                    }); 
-                }
-            }
-        };*/
-    }]);
+

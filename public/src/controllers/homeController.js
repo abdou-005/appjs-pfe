@@ -13,9 +13,7 @@ app
 			});
 
 		};
-
 		refrech();
-
 		$scope.createUser = function(){
 			if($scope.user == '' || !$scope.user.email || !$scope.user.password){
 				console.log('user null or email  password null');
@@ -32,7 +30,6 @@ app
 			console.log('autre chose');
 			refrech();
 		};
-
 		$scope.removeUser = function(id){
 			console.log(id);
 			homeProvider.removeUser(id,function(data){
@@ -41,7 +38,6 @@ app
 			refrech();
 
 		};
-
 		$scope.editUser = function(id){
 			console.log(id);
 			homeProvider.editUser(id,function(data){

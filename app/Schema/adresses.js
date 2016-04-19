@@ -5,8 +5,11 @@ exports.schema = new mongoose.Schema({
 		lieu : String,
 		dep : String,
 		region : String,
-		pos : {lat:String, lng:String},
+		location : {type: [Number]}, //long lat
 		codePostal : String,
-		InterventionArea : Number
+		created_at: {type: Date, default: Date.now},
+		updated_at: {type: Date, default: Date.now},
+		InterventionArea : Number,
+		isDefault : {type :  Boolean, default:false}
 	}
 )

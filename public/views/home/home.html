@@ -20,25 +20,25 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div class="x_content">
+            <div class="x_content" ng-init=" showprest=false;">
                 <br />
-                <form class="form-horizontal form-label-left" name="formInscrit">
+                <form class="form-horizontal form-label-left" name="formInscrit" novalidate>
 
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2 col-xs-12">Nom <span class="required">*</span></label>
                         <div class="col-md-4 col-sm-4 col-xs-12">
-                            <input type="text" class="form-control" placeholder="Nom" ng-model="user.firstname" value="autre">
+                            <input type="text" class="form-control" placeholder="Nom" ng-model="user.firstname"  required>
                         </div>
 
                         <label class="control-label col-md-2 col-sm-2 col-xs-12">Prenom <span class="required">*</span></label>
                         <div class="col-md-4 col-sm-4 col-xs-12">
-                            <input type="text" class="form-control" placeholder="Prenom" ng-model="user.lastname">
+                            <input type="text" class="form-control" placeholder="Prenom" ng-model="user.lastname" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2 col-xs-12">E-mail <span class="required">*</span></label>
                         <div class="col-md-4 col-sm-4 col-xs-12">
-                            <input type="email"  class="form-control" placeholder="E-mail" ng-model="user.email" required="true">
+                            <input type="email"  class="form-control" placeholder="E-mail" ng-model="user.email" required>
 
                         </div>
                         <label class="control-label col-md-2 col-sm-2 col-xs-12">Password <span class="required">*</span></label>
@@ -62,37 +62,23 @@
                             <br>
                             <small class="text-navy">client/prestataire/ADMIN</small>
                         </label>
-                        <div class="col-md-4 col-sm-4 col-xs-12" ng-init=" showprest=false; showadmin=false; showclient=true;">
+                        <div class="col-md-4 col-sm-4 col-xs-12">
                             <label for="client">
-                                <input type="radio" id="client" name="typeuser" ng-model="user.typeUser" value="client"  >
-                                <span ng-click="showprest=false; showadmin=false; showclient=true;" >Client</span>
+                                <input type="radio" id="client" name="typeuser" ng-model="user.typeUser" value="client"  checked>
+                                <span ng-click="showprest=false;">Client</span>
                             </label>
 
                             <label for="artisan">
                                 <input type="radio" id="artisan" name="typeuser" ng-model="user.typeUser" value="artisan" >
-                                <span ng-click="showprest=true; showadmin=false; showclient=false;">Prestataire</span>
+                                <span ng-click="showprest=true;">Prestataire</span>
                             </label>
 
                             <label for="admin">
                                 <input type="radio" id="admin" name="typeuser" ng-model="user.typeUser" value="admin" >
-                                <span ng-click="showprest=false; showadmin=true; showclient=false;">Admin</span>
+                                <span ng-click="showprest=false;">Admin</span>
                             </label>
                         </div>
                     </div>
-                    <!-- Client-->
-                    <div class="form-group" ng-show="showclient">
-                        <label class="control-label col-md-3 col-md-offset-2 col-sm-3 col-xs-12">Etat</label>
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                            <div class="">
-                                <label ng-init="activer = true" >
-                                    <input type="checkbox" class="js-switch"   ng-model="user.etat" />
-                                    <span ng-show="activer" ng-click="activer=false;"> Desactiver</span>
-                                    <span ng-hide="activer" ng-click="activer=true;">Activer</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- //client-->
                     {{user}}
                     <!-- Prestataire-->
                     <div ng-show="showprest">
@@ -122,61 +108,44 @@
                                 <input type="number" class="form-control" placeholder="0" ng-model="user.effectif">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-md-offset-2 col-sm-3 col-xs-12">Etat</label>
-                            <div class="col-md-4 col-sm-4 col-xs-12">
-                                <div class="">
-                                    <label ng-init="activer = true" >
-                                        <input type="checkbox" class="js-switch"   ng-model="user.etat" />
-                                        <span ng-show="activer" ng-click="activer=false;"> Desactiver</span>
-                                        <span ng-hide="activer" ng-click="activer=true;">Activer</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                     <!--  // Prestataire-->
-                    <!-- Admin-->
-                    <div ng-show="showadmin">
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-md-offset-2 col-sm-3 col-xs-12">Etat</label>
-                            <div class="col-md-4 col-sm-4 col-xs-12">
-                                <div class="">
-                                    <label ng-init="activer = true" >
-                                        <input type="checkbox" class="js-switch"   ng-model="user.etat" />
-                                        <span ng-show="activer" ng-click="activer=false;"> Desactiver</span>
-                                        <span ng-hide="activer" ng-click="activer=true;">Activer</span>
-                                    </label>
-                                </div>
-                                <div class="">
-                                    <label ng-init="confirmer = true">
-                                        <input type="checkbox" class="js-switch"  ng-model="user.confirmer" />
-                                        <span ng-show="confirmer" ng-click="confirmer=false;"> Non-Confirmer</span>
-                                        <span ng-hide="confirmer" ng-click="confirmer=true;">Confirmer</span>
-                                    </label>
-                                </div>
-                                <div class="">
-                                    <label ng-init="dispo = true">
-                                        <input type="checkbox" class="js-switch"  ng-model="user.dispo" />
-                                        <span ng-show="dispo" ng-click="dispo=false;"> Non-Dispo</span>
-                                        <span ng-hide="dispo" ng-click="dispo=true;">Disponible</span>
-                                    </label>
-                                </div>
-                            </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-md-offset-2 col-sm-3 col-xs-12 control-label">Verifier
+                            <br>
+                            <small class="text-navy">etat/Conf/Dispo</small>
+                        </label>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <label for="etatUser" ng-init="activer = false">
+                                <input type="checkbox" id="etatUser" class="js-switch" ng-model="user.etat" ng-checked="activer" />
+                                <span>Etat</span>
+                            </label>
+
+                            <label for="confiUser" ng-init="confirmer = false">
+                                <input type="checkbox" id="confiUser" class="js-switch" ng-model="user.confirmer" ng-checked="confirmer" />
+                                <span >Confirmer</span>
+                            </label>
+
+                            <label for="dispoUser" ng-init="dispo = false" >
+                                <input type="checkbox" id="dispoUser" class="js-switch" ng-model="user.dispo" ng-checked="dispo" />
+                                <span>Dispo</span>
+                            </label>
                         </div>
                     </div>
-                    <!--  //Admin-->
-
                     <div class="ln_solid"></div>
                     <div class="form-group">
+                        <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-2">
+                            <button type="submit" class="btn btn-success btn-block" ng-click="createUser()" ng-disabled="formInscrit.$invalid">Submit</button>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                            <button type="submit" class="btn btn-info btn-block" ng-click="updateUser()" ng-disabled="formInscrit.$invalid"> Update</button>
+                            <button type="reset" class="btn btn-primary btn-block" ng-click="deselect()" >Cancel</button>
+                        </div>
                         <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                            <button  class="btn btn-primary btn-sm" ng-click="deselect()">Cancel</button>
-                            <button  class="btn btn-success btn-sm" ng-click="createUser()">Submit</button>
-                            <button class="btn btn-info btn-sm" ng-click="updateUser()"> Update</button>
+
+
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>
@@ -262,7 +231,7 @@
                             <td class=" " ><span ng-repeat="v in u.typeUser">{{v}}</span></td>
                             <td class=" " ><p ng-repeat="s in u.specialites"> <strong>{{s.name}}</strong><br/> </p></td>
                             <td class=" ">{{u.email}} || {{u.password}}</td>
-                            <td class=" ">{{u.dateDebut  | date : format : timezone}}</td>
+                            <td class=" ">{{u.created_at  | date : format : timezone}}</td>
                             <td class=" " ><span ng-repeat="v in u.statut">{{v}}</span></td>
                             <td class="a-right a-right ">{{u.confirmer}}</td>
                             <td class=" last"><a href="#">

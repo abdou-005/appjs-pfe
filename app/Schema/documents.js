@@ -7,6 +7,8 @@ exports.schema = new mongoose.Schema({
 		type:String,
 		urlDoc : String,
 		format : String,
+		created_at: {type: Date, default: Date.now},
+		updated_at: {type: Date, default: Date.now},
 		etat : ['inRuns','confirm']
 	}
 )

@@ -6,7 +6,8 @@ var medias = require('./medias');
 exports.schema = new mongoose.Schema({
 		title : String,
 		desc : String,
-		dateAdded : {type:Date, default: Date.now},
+		created_at: {type: Date, default: Date.now},
+		updated_at: {type: Date, default: Date.now},
 
 		photo : medias.schema
 	}

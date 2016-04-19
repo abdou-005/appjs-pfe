@@ -7,6 +7,8 @@ var specialites = require('./specialites');
 exports.schema = new mongoose.Schema({
 		name : String,
 		desc : String,
+		created_at: {type: Date, default: Date.now},
+		updated_at: {type: Date, default: Date.now},
 		specialites : [specialites.schema],
 		tags : [tags.schema]
 	}

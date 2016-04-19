@@ -8,13 +8,14 @@ var devis = require('./devis');
 exports.schema = new mongoose.Schema({
 		name : String,
 		desc : String,
-		dateAdded : {type:Date, default: Date.now},
+		created_at: {type: Date, default: Date.now},
+		updated_at: {type: Date, default: Date.now},
 		startDate : {type: Date},
 		endDate : {type:Date},
 		state : ['waiting','inruns','finish'],
 
 		adresse : adresses.schema,
 		devis : devis.schema,
-		avi : avis.schema
+		avis : avis.schema
 	}
 )

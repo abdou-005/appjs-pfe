@@ -1,4 +1,4 @@
-<div class="col-md-12 col-xs-12" ng-controller="demandeDevisCtrl">
+<div class="col-md-12 col-xs-12">
     <div class="x_panel">
         <div class="x_title">
             <h2>Devis <small>Client</small>{{messages}}</h2>
@@ -20,46 +20,33 @@
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
-        {{devi}}
-            <form class="form-horizontal form-label-left" name="formContent" enctype="multipart/form-data">
+            <form class="form-horizontal form-label-left" name="formContent">
                 <div class="col-md-6 col-xs-12">
                     <br/>
                     <div class="col-md-6">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <input type="text" class="form-control" placeholder="titre" ng-model="devi.title" >
+                                    <input type="text" class="form-control" placeholder="titre" ng-model="devis.title" >
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <textarea class="form-control" rows="3" placeholder="Contents" ng-model="devi.contents"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <!-- <div class="button" ngf-select="upload($file)">Upload on file select</div> -->
-                                    <div class="button" alt="" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'" accept="image/*">Upload on file select</div>
+                                    <textarea class="form-control" rows="3" placeholder="Description" ng-model="devis.desc"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
-            <li ng-show="isArtisan">
                     <div class="col-md-6">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <div class="">
-                                        
+                                <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" ng-click="createOffre()">+</button>
+                                        </span>
                                     <input type="text" class="form-control" placeholder="offre" ng-model="offre.title">
-                                    <input type="text" class="form-control" placeholder="description" ng-model="offre.desc">
-                                    <div col-md-12>
-                                        <button type="button" class="btn btn-primary" ng-click="createOffre()"> Ajouter offre </button>
-                                        <button type="button" class="btn btn-primary" ng-click="cancel()">  Cancel </button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -69,16 +56,40 @@
                             </a>
 
                         </div>
-                        <div class="col-md-12" ng-show="devi.offres">
+                        <div class="col-md-12" ng-show="devis.offres">
                             <hr/>
-                            <a ng-repeat="offre in devi.offres" href="" class="btn btn-danger btn-xs" ng-click="removeOffreDevis(offre, devi)">
+                            <a ng-repeat="offre in devis.offres" href="" class="btn btn-danger btn-xs" ng-click="removeOffreDevis(offre, devis)">
                                 <i class="fa fa-trash-o" ></i> {{offre.title}}
                             </a>
                         </div>
                     </div>
                 </div>
-            </li>
-
+                <!-- <div class="col-md-6 col-xs-12">
+                    <br/>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Specialites" ng-model="specialite.name">
+                                <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" ng-click="createSpecialite()">+</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" ng-show="specialites">
+                
+                        <a ng-repeat="s in specialites" href="" class="btn btn-danger btn-xs" ng-click="removeSpecialite(s)">
+                            <i class="fa fa-trash-o" ></i> {{s.name}}
+                        </a>
+                    </div>
+                    <div class="col-md-12" ng-show="domaine.specialites">
+                        <hr/>
+                        <a ng-repeat="s in domaine.specialites" href="" class="btn btn-danger btn-xs" ng-click="removeSpecialiteDom(s,domaine)">
+                            <i class="fa fa-trash-o" ></i> {{s.name}}
+                        </a>
+                    </div>
+                </div>
+                 -->
                 <div class="clearfix"></div>
                 <div class="ln_solid"></div>
                 <div class="form-group">
@@ -124,7 +135,7 @@
                             <input type="checkbox" class="tableflat">
                         </th>
                         <th>Nom </th>
-                        <th>Contents </th>
+                        <th>Description </th>
                         <th>state </th>
                         <th>type</th>
                         <th>offre</th>
@@ -133,18 +144,18 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="devi in devis" >
+                    <tr ng-repeat="d in devis" >
                         <td class="a-center ">
                             <a href="" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
                         </td>
-                        <td class=" ">{{devi.title}}</td>
-                        <td class=" " >{{devi.contents}}</td>
-                        <td class=" ">{{devi.state}}</td>
-                        <td class=" ">{{devi.type}}</td>
-                        <td class=" ">{{devi.offres}}</td>
+                        <td class=" ">{{d.title}}</td>
+                        <td class=" " >{{d.desc}}</td>
+                        <td class=" ">{{d.state}}</td>
+                        <td class=" ">{{d.type}}</td>
+                        <td class=" ">{{d.offres}}</td>
                         <td class=" last"><a href="#">
-                            <a href="" class="btn btn-warning btn-xs" ng-click="editDevis(devi._id)"><i class="fa fa-pencil" ></i> Edit </a>
-                            <a href="" class="btn btn-danger btn-xs" ng-click="removeDevis(devi._id)"><i class="fa fa-trash-o" ></i> Delete </a></a>
+                            <a href="" class="btn btn-warning btn-xs" ng-click="editDevis(d._id)"><i class="fa fa-pencil" ></i> Edit </a>
+                            <a href="" class="btn btn-danger btn-xs" ng-click="removeDevis(d._id)"><i class="fa fa-trash-o" ></i> Delete </a></a>
                         </td>
                     </tr>
                     </tbody>

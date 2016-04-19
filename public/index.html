@@ -13,6 +13,9 @@
     <link href="ressources/css/custom.css" rel="stylesheet">
     <link href="ressources/css/icheck/flat/green.css" rel="stylesheet">
 
+
+    <link href="ressources/css/calendar/fullcalendar.css" rel="stylesheet">
+    <link href="ressources/css/calendar/fullcalendar.print.css" rel="stylesheet" media="print">
     <!-- select2 -->
     <link href="ressources/css/select/select2.min.css" rel="stylesheet">
     <!-- switchery -->
@@ -41,12 +44,11 @@
     -->
     <script src="ressources/js/jquery.min.js"></script>
     <!-- Angular core components -->
-    <script type="text/javascript" src="src/vendors/angular/angular.js"></script>
-    <script type="text/javascript" src="src/vendors/angular-route/angular-route.js"></script>
+
+    <script type="text/javascript" src="libs/angular/angular.js"></script>
+    <script type="text/javascript" src="libs/angular-route/angular-route.js"></script>
     <script type="text/javascript" src="libs/angular-socket-io/socket.js"></script>
     <script src="libs/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
-    <script type="text/javascript" src="libs/ng-file-upload/dist/ng-file-upload.min.js"></script>
-
     <!-- Initialize Angular App  -->
     <script type="text/javascript" src="app.js"></script>
     <script type="text/javascript" src="routing.js"></script>
@@ -62,9 +64,9 @@
     <script type="text/javascript" src="src/controllers/devis/demandeDevisController.js"></script>
     <script type="text/javascript" src="src/controllers/devis/devisExpressController.js"></script>
     <script type="text/javascript" src="src/controllers/devis/recueExpressController.js"></script>
-    <script type="text/javascript" src="src/controllers/notificationController.js"></script>
+    <script type="text/javascript" src="src/controllers/notification/notificationController.js"></script>
     <script type="text/javascript" src="src/controllers/adresseController.js"></script>
-
+    <script type="text/javascript" src="src/controllers/notification/notificationUserController.js"></script>
     <!-- Directives-->
     <script type="text/javascript" src="src/directives/itemDecoratorDirective.js"></script>
     <!-- Services-->
@@ -73,10 +75,16 @@
     <script type="text/javascript" src="src/services/socketDevisFactory.js"></script>
     <script type="text/javascript" src="src/services/devisProvider.js"></script>
     <script type="text/javascript" src="src/services/gserviceFactory.js"></script>
+    <script type="text/javascript" src="src/services/offreProvider.js"></script>
+    <script type="text/javascript" src="src/services/notificationProvider.js"></script>
+    <script type="text/javascript" src="src/services/questionProvider.js"></script>
     <!-- Repositorys-->
     <script type="text/javascript" src="src/repositorys/contentRepository.js"></script>
     <script type="text/javascript" src="src/repositorys/homeRepository.js"></script>
     <script type="text/javascript" src="src/repositorys/devisRepository.js"></script>
+    <script type="text/javascript" src="src/repositorys/offreRepository.js"></script>
+    <script type="text/javascript" src="src/repositorys/notificationRepository.js"></script>
+    <script type="text/javascript" src="src/repositorys/questionRepository.js"></script>
 </head>
 <body class="nav-md" ng-app="myApp"  ng-init="x= 'Hello';">
 <div class="container body" ng-show="authenticated">
@@ -235,17 +243,15 @@
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     </div>
                     <ul class="nav navbar-nav navbar-right">
-                        <li ng-hide="authenticated"><a href="/login">Login</a> </li>
-                        <li ng-hide="authenticated"><a href="/register">register</a> </li>
-                        <li class="" data_ng-controller="profilClientCtrl">
-                            
+                        <!-- top Bar navigation Profil Settings User  ------------->
+                        <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <img src="{{medias_profil.urlMedia}}"  alt="" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'" accept="image/*"> {{current_user.email}} 
+                                <span ng-show="current_user.dispo" class="badge bg-green" ng-click="disponible()">Disponible</span>
+                                <span ng-show="!current_user.dispo" class="badge bg-orange" ng-click="disponible()">Occuper</span>
+                                <img src="" alt=""> {{current_user.email}}
                                 <span class=" fa fa-angle-down"></span>
+
                             </a>
-                            <!-- <section data-ng-controller="profilClientCtrl">
-                                <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'" accept="image/*" >Select</div>
-                            </section> -->
                             <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
                                 <li ng-show="isAdmin">
                                     <a href="/profilAdmin">Profile Admin</a>
@@ -269,39 +275,27 @@
                                 </li>
                             </ul>
                         </li>
-                        <!-- top navigation Notification ------------------------------------------------------------------------ -->
-                        <li role="presentation" class="dropdown" ng-show="true"  ng-controller="notificationCtrl">
-                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-envelope-o"></i>
-                                <span class="badge bg-green" ng-if="isArtisan">{{nbrNewDevis}}</span>
-                                <span class="badge bg-green" ng-if="isClient">{{nbrRecueDevis}}</span>
+                        <!-- // Fin top Bar navigation Profil Settings User  ------------->
+
+                        <!-- top Bar navigation Message User  ------------->
+                        <li role="presentation" class="dropdown" style="padding: 5px;">
+                            <a  href="javascript:;" class="dropdown-toggle btn btn-app" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-envelope"></i>
+                                <span class="badge bg-orange">6</span>
+                                Message
                             </a>
-                            <ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
-                                <li ng-if="isArtisan" ng-repeat=" n in notificationNewDevis">
+                            <ul id="menu3" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
+                                <li >
                                     <a>
                                         <span class="image">
                                            <img src="ressources/images/img.jpg" alt="Profile Image" />
                                         </span>
                                                 <span>
-                                                    <span>{{n.user.email}}</span>
+                                                    <span>fef</span>
                                                     <span class="time">3 mins ago</span>
                                                 </span>
                                         <span class="message">
-                                            {{n.service}}
-                                        </span>
-                                    </a>
-                                </li>
-                                <li  ng-if="isClient" ng-repeat=" n in notificationRecueDevis">
-                                    <a>
-                                        <span class="image">
-                                           <img src="ressources/images/img.jpg" alt="Profile Image" />
-                                        </span>
-                                                <span>
-                                                    <span>{{n.user.email}}</span>
-                                                    <span class="time">3 mins ago</span>
-                                                </span>
-                                        <span class="message">
-                                            {{n.service}}
+                                          fwfaw
                                         </span>
                                     </a>
                                 </li>
@@ -314,17 +308,137 @@
                                     </div>
                                 </li>
                             </ul>
+                        </li>
+                        <!-- // Fin top Bar navigation Message User  ------------->
+
+                        <!-- top Bar navigation Notification User  ------------->
+                        <li role="presentation" class="dropdown" ng-controller="notificationUserCtrl" style="padding: 5px;">
+                            <a  href="javascript:;" class="dropdown-toggle btn btn-app" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-bullhorn"></i>
+                                <span class="badge bg-red">{{current_user.notifications.length}}</span>
+                                Notification
+                            </a>
+                            <ul id="menu2" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
+                                <li ng-repeat="notifUser in current_user.notifications">
+                                    <a>
+                                        <span class="image">
+                                           <img src="ressources/images/img.jpg" alt="Profile Image" />
+                                        </span>
+                                                <span>
+                                                    <span>{{notifUser.message}}</span>
+                                                    <span class="time">3 mins ago  <i class="fa fa-trash" ng-click="deleteNotification(notifUser)"></i></span>
+
+                                                </span>
+                                        <span class="message">
+                                          fwfaw
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="text-center">
+                                        <a href="/devisExpress">
+                                            <strong>See All Alerts</strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- // Fin top Bar navigation Notification User  ------------->
+
+                        <!-- top Bar navigation Notification New Devis express Artisan  ------------->
+                        <li role="presentation" class="dropdown" ng-show="isArtisan"  ng-controller="notificationCtrl" style="padding: 5px;">
+                            <a href="javascript:;" class="dropdown-toggle btn btn-app" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-inbox"></i>
+                                <span class="badge bg-green">{{notificationNewDevis.length}}</span>
+                                Mission
+                            </a>
+                            <ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
+                                <li ng-if="isArtisan" ng-repeat=" n in notificationNewDevis">
+                                    <a>
+                                        <span class="image">
+                                           <img src="ressources/images/img.jpg" alt="Profile Image" />
+                                        </span>
+                                                <span>
+                                                    <span>{{n.user.email}}</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                        <span class="message">
+                                            {{n.devis.title}}
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="text-center">
+                                        <a href="/recueExpress">
+                                            <strong>See All Alerts</strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
 
                         </li>
-                        <!-- //top navigation Notification ------------------------------------------------------------------------ -->
+                        <!-- // Fin top Bar navigation Notification New Devis express Artisan ----------->
                     </ul>
                 </nav>
             </div>
-
         </div>
         <!-- /top navigation -->
+
         <!-- page content -->
         <div class="right_col" role="main">
+            <div class="row tile_count">
+                <div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
+                    <div class="left"></div>
+                    <div class="right">
+                        <span class="count_top"><i class="fa fa-user"></i> Total Users</span>
+                        <div class="count">2500</div>
+                        <span class="count_bottom"><i class="green">4% </i> From last Week</span>
+                    </div>
+                </div>
+                <div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
+                    <div class="left"></div>
+                    <div class="right">
+                        <span class="count_top"><i class="fa fa-clock-o"></i> Average Time</span>
+                        <div class="count">123.50</div>
+                        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span>
+                    </div>
+                </div>
+                <div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
+                    <div class="left"></div>
+                    <div class="right">
+                        <span class="count_top"><i class="fa fa-user"></i> Total Males</span>
+                        <div class="count green">2,500</div>
+                        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+                    </div>
+                </div>
+                <div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
+                    <div class="left"></div>
+                    <div class="right">
+                        <span class="count_top"><i class="fa fa-user"></i> Total Females</span>
+                        <div class="count">4,567</div>
+                        <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
+                    </div>
+                </div>
+                <div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
+                    <div class="left"></div>
+                    <div class="right">
+                        <span class="count_top"><i class="fa fa-user"></i> Total Collections</span>
+                        <div class="count">2,315</div>
+                        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+                    </div>
+                </div>
+                <div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
+                    <div class="left"></div>
+                    <div class="right">
+                        <span class="count_top"><i class="fa fa-user"></i> Total Connections</span>
+                        <div class="count">7,325</div>
+                        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+                    </div>
+                </div>
+
+            </div>
             <div class="">
                 <div class="page-title">
                     <div class="title_left">
@@ -343,8 +457,35 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="row" >
-                    <div ng-view>
+                    <div class="col-md-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Calender Events <small>Sessions</small></h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Settings 1</a>
+                                            </li>
+                                            <li><a href="#">Settings 2</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
 
+                                <div id='calendar'></div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-view>
                     </div>
                 </div>
             </div>
@@ -357,6 +498,81 @@
                 <div class="clearfix"></div>
             </footer>
             <!-- /footer content -->
+
+            <!-- Start Calender modal -->
+            <div id="CalenderModalNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">New Calender Entry</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="testmodal" style="padding: 5px 20px;">
+                                <form id="antoform" class="form-horizontal calender" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Title</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="title" name="title">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Description</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" style="height:55px;" id="descr" name="descr"></textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary antosubmit">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="CalenderModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel2">Edit Calender Entry</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div id="testmodal2" style="padding: 5px 20px;">
+                                <form id="antoform2" class="form-horizontal calender" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Title</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="title2" name="title2">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Description</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" style="height:55px;" id="descr2" name="descr"></textarea>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary antosubmit2">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="fc_create" data-toggle="modal" data-target="#CalenderModalNew"></div>
+            <div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>
+
+            <!-- End Calender modal -->
         </div>
         <!-- /page content -->
     </div>
@@ -383,18 +599,17 @@
     <div id="wrapper">
         <div id="login" class="animate form">
             <section class="login_content">
-                <form>
+                <form name="loginForm" novalidate>
                     <h1>Login Form</h1>
                     <div>
-                        <input type="email" class="form-control" placeholder="Email" name="email" ng-model="user.email" required="" />
+                        <input type="email" class="form-control" placeholder="Email" name="email" ng-model="user.email" required/>
                     </div>
                     <div>
-                        <input type="password" class="form-control" placeholder="Password" name="password" ng-model="user.password" required="" />
+                        <input type="password" class="form-control" placeholder="Password" name="password" ng-model="user.password" required/>
                     </div>
                     <div>
-                        <button class="btn btn-default btn-sm" ng-click="getToken()">getToken</button>
-                        <button class="btn btn-default btn-sm" ng-click="loginUser()">Log in</button>
-                        <button class="btn btn-info btn-sm" ng-click="deselect()">cancel</button>
+                        <button type="submit" class="btn btn-default btn-sm" ng-click="loginUser()" ng-disabled="loginForm.$invalid">Log in</button>
+                        <button type="reset" class="btn btn-info btn-sm" ng-click="deselect()">cancel</button>
                         <a class="reset_pass" href="#">Lost your password?</a>
                     </div>
                     <div class="clearfix"></div>
@@ -416,13 +631,13 @@
         </div>
         <div id="register" class="animate form">
             <section class="login_content">
-                <form >
+                <form name="formRegister">
                     <h1>Create Account</h1>
                     <div>
-                        <input type="email" class="form-control" placeholder="Email"  name="email"  ng-model="user.email" />
+                        <input type="email" class="form-control" placeholder="Email"  name="email"  ng-model="user.email" required/>
                     </div>
                     <div>
-                        <input type="password" class="form-control" placeholder="Password"  name="password"  ng-model="user.password" />
+                        <input type="password" class="form-control" placeholder="Password"  name="password"  ng-model="user.password" required/>
                     </div>
                     <div ng-init=" showPrest=false; showClient = false;">
                         <label for="client">
@@ -449,8 +664,8 @@
                     <br/>
                     <div class="clearfix"></div>
                     <div>
-                        <button  class="btn btn-default btn-sm" ng-click="registerUser()">Signup</button>
-                        <button  class="btn btn-info btn-sm" ng-click="deselect()">cancel</button>
+                        <button type="submit" class="btn btn-default btn-sm" ng-click="registerUser()" ng-disabled="loginForm.$invalid">Signup</button>
+                        <button type="reset" class="btn btn-info btn-sm" ng-click="deselect()">cancel</button>
                     </div>
                     <div class="separator">
                         <p class="change_link">Already a member ?
@@ -471,11 +686,120 @@
     </div>
 </div>
 <script src="ressources/js/bootstrap.min.js"></script>
+<!-- chart js -->
+<script src="ressources/js/chartjs/chart.min.js"></script>
 <!-- bootstrap progress js -->
 <script src="ressources/js/progressbar/bootstrap-progressbar.min.js"></script>
 <script src="ressources/js/nicescroll/jquery.nicescroll.min.js"></script>
-<!-- switchery -->
+<!-- switchery-->
 <script src="ressources/js/switchery/switchery.min.js"></script>
+<!-- Custom js-->
 <script src="ressources/js/custom.js"></script>
+
+<script src="ressources/js/moment.min.js"></script>
+<script src="ressources/js/calendar/fullcalendar.min.js"></script>
+
+<script>
+    $(window).load(function () {
+
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+        var started;
+        var categoryClass;
+
+        var calendar = $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            selectable: true,
+            selectHelper: true,
+            select: function (start, end, allDay) {
+                $('#fc_create').click();
+
+                started = start;
+                ended = end
+
+                $(".antosubmit").on("click", function () {
+                    var title = $("#title").val();
+                    if (end) {
+                        ended = end
+                    }
+                    categoryClass = $("#event_type").val();
+
+                    if (title) {
+                        calendar.fullCalendar('renderEvent', {
+                                    title: title,
+                                    start: started,
+                                    end: end,
+                                    allDay: allDay
+                                },
+                                true // make the event "stick"
+                        );
+                    }
+                    $('#title').val('');
+                    calendar.fullCalendar('unselect');
+
+                    $('.antoclose').click();
+
+                    return false;
+                });
+            },
+            eventClick: function (calEvent, jsEvent, view) {
+                //alert(calEvent.title, jsEvent, view);
+
+                $('#fc_edit').click();
+                $('#title2').val(calEvent.title);
+                categoryClass = $("#event_type").val();
+
+                $(".antosubmit2").on("click", function () {
+                    calEvent.title = $("#title2").val();
+
+                    calendar.fullCalendar('updateEvent', calEvent);
+                    $('.antoclose2').click();
+                });
+                calendar.fullCalendar('unselect');
+            },
+            editable: true,
+            events: [
+                {
+                    title: 'All Day Event',
+                    start: new Date(y, m, 1)
+                },
+                {
+                    title: 'Long Event',
+                    start: new Date(y, m, d - 5),
+                    end: new Date(y, m, d - 2)
+                },
+                {
+                    title: 'Meeting',
+                    start: new Date(y, m, d, 10, 30),
+                    allDay: false
+                },
+                {
+                    title: 'Lunch',
+                    start: new Date(y, m, d + 14, 12, 0),
+                    end: new Date(y, m, d, 14, 0),
+                    allDay: false
+                },
+                {
+                    title: 'Birthday Party',
+                    start: new Date(y, m, d + 1, 19, 0),
+                    end: new Date(y, m, d + 1, 22, 30),
+                    allDay: false
+                },
+                {
+                    title: 'Click for Google',
+                    start: new Date(y, m, 28),
+                    end: new Date(y, m, 29),
+                    url: 'http://google.com/'
+                }
+            ]
+        });
+    });
+</script>
 </body>
 </html>

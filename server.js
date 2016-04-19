@@ -13,7 +13,6 @@ mongoose = Promise.promisifyAll(require('mongoose')); //add bluebird to  Mongo s
 logLib = require('./lib/log');
 app = express();
 
-
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
@@ -62,20 +61,18 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 require('./app/routes/avis');
 require('./app/routes/demanderDevis');
 require('./app/routes/offres');
-require('./app/routes/profil');
+require('./app/routes/notifications');
+require('./app/routes/questions');
 // require var ROUTES -------------------
 var authenticatejwt = require('./app/routes/authenticationjwt');
 var usersRoute = require('./app/routes/users');
 var domainesRoute = require('./app/routes/domaines');
-var demandeDevis = require('./app/routes/demanderDevis');
-var profil = require('./app/routes/profil');
 
 // apply the routes to our application with the prefix
 app.use('/auth', authenticatejwt);
 app.use('/users', usersRoute);
 app.use('/domaines', domainesRoute);
-app.use('/devis',demandeDevis);
-app.use('/profil',profil);
+
 /// test Schema
 /*
 var devi = new models.Devi({
@@ -109,6 +106,14 @@ io.on('connection', function (socket) {
 		socket.broadcast.emit('new-devis',newDevis);
 	});
 
+	socket.on('new-notif',function(userNotif){
+		console.log('notification pour ',userNotif);
+		socket.broadcast.emit('new-notif',userNotif);
+	});
+	socket.on('new-devis-quest',function(newDevisQuest){
+		console.log(newDevisQuest.prestataireId);
+		socket.broadcast.emit('new-devis-quest',newDevisQuest);
+	});
 	socket.on('disconnect',function(){
 		console.log('user has disconnected');
 		socket.broadcast.emit('client-deco',socket.userClient);

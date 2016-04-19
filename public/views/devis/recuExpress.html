@@ -1,57 +1,6 @@
 
-
-
-
 <div class="col-md-12 col-xs-12">
-    <div class="col-md-6 col-xs-12">
-        <h4>Demande votre service</h4>
-        <form class="form-horizontal form-label-left" >
-            <div class="form-group">
-                <label class="control-label col-md-2 col-sm-2 col-xs-12">Devis <span class="required">*</span></label>
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                    <input type="text" class="form-control" placeholder="Devis" name="devis" ng-model="devis.title" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2 col-sm-2 col-xs-12">Domaine </label>
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                    <select name="spc" ng-model="domaine._id" class="form-control" ng-click="getSpecialites(domaine._id)" >
-                        <option value="{{d._id}}"  ng-repeat="d in domaines"  >{{d.name}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group" ng-show="showSpec">
-                <label class="control-label col-md-2 col-sm-2 col-xs-12">Specialites</label>
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                    <select name="multipleSelect" id="multipleSelect" class="form-control"  ng-model="user.specialites" multiple>
-                        <option value="{{s.name}}" ng-repeat="s in specialitesDom">{{s.name}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2 col-sm-2 col-xs-12">Adresse <span class="required">*</span></label>
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                    <input type="text" class="form-control" placeholder="Adresse" name="adresse" ng-model="adresse.name" />
-                    <strong>OR</strong>
-                    <a href="#">autre</a>
-                </div>
-            </div>
-            <p>
-                <strong>Type : Express</strong>
-                <br/>
-                State : waiting
-            </p>
-            <p>{{messages}}</p>
-            <div class="ln_solid"></div>
-            <div class="form-group">
-                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                    <button  class="btn btn-default btn-sm" ng-click="setInformation()">Envoyer</button>
-                    <button  class="btn btn-info btn-sm" ng-click="deselect()">cancel</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="col-md-6 col-xs-12">
+    <div class="col-md-12 col-xs-12">
         <h4>Conversation Liste Client</h4>
         <table class="table">
             <thead>
@@ -77,24 +26,65 @@
             </tbody>
         </table>
         <h4>Conversation Liste Devis</h4>
-        <table class="table" ng-controller="notificationCtrl">
+        <table class="table">
             <thead>
             <tr>
-                <th>Type</th>
                 <th>Contact</th>
-                <th>Adresse</th>
                 <th>Devis</th>
+                <th>Adresse</th>
+                <th>Offre</th>
                 <th>Action</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat=" n in notificationNewDevis">
-                <td> {{n.user.typeUser}}</td>
-                <td> {{n.user.email}}</td>
-                <td>{{n.user.devis}}</td>
-                <td> ?</td>
-                <td> <button  class="btn btn-default btn-sm" ng-click="">Confirmer</button>
-                    <button  class="btn btn-info btn-sm" ng-click="">cancel</button>
+                <td>
+                    {{n.user.email}}
+                    <br/>
+                </td>
+                <td>{{n.devis.title}}</td>
+                <td>
+                    <div id="mapDevis" style="width:150px; height:150px">{{n.devis.adresseDevis.location}}</div>
+                </td>
+                <td>
+                    <p ng-repeat=" offre in n.devis.offres" ng-if="offre.prestataireId == current_user._id">
+                        <a href="#">Prestataire  = {{offre.prestataireId}} </a>
+                        <br/>
+                        <span> {{offre.title}}</span>
+                         <br/>
+                        <span>{{offre.desc}}</span>
+                        <br/>
+                        <a href="#" ><strong> {{offre.questions.length}} </strong> Question(s) </a>
+                            <br/>
+                            <span ng-repeat="question in offre.questions">
+                                <span>{{question.contents}}</span> <br/>
+                            </span>
+                            <input type="text" class="form-control" placeholder="Questions"  id="quest{{offre._id}}" />
+                            <button  class="btn btn-default btn-sm" ng-click="createQuestion(n,offre)">Envoyer</button>
+                    </p>
+                </td>
+                <td ng-init="showFormOffre = false;">
+                    <button  class="btn btn-default btn-sm" ng-click="showFormOffre=true;">Ajouter</button>
+                    <form class="form-horizontal form-label-left" ng-show="showFormOffre">
+                        {{n.offre}}
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <input type="text" class="form-control" placeholder="Title"  ng-model="n.offre.title" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <textarea class="form-control" rows="3" placeholder="Description"  ng-model="n.offre.desc"></textarea>
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                <button  class="btn btn-default btn-sm" ng-click="createOffre(n)">Envoyer</button>
+                                <button  class="btn btn-info btn-sm" ng-click="deselect()">cancel</button>
+                            </div>
+                        </div>
+                    </form>
                 </td>
             </tr>
             </tbody>

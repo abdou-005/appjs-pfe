@@ -5,6 +5,8 @@ exports.schema = new mongoose.Schema({
 		serviceName:{type : String, maxlength:50},
 		desc:String,
 		remise:String,
+		created_at: {type: Date, default: Date.now},
+		updated_at: {type: Date, default: Date.now},
 		prix:{type : String, maxlength:50}
 	}
 )

@@ -1,6 +1,7 @@
 /**
  * Created by abdo on 2016-03-31.
  */
+
 exports.index = function (req, res) {
 	var returnResponse = function(collection){
 		res.json(collection);

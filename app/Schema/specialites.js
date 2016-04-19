@@ -3,6 +3,8 @@
  */
 exports.schema = new mongoose.Schema({
 		name : String,
-		desc : String
+		desc : String,
+		created_at: {type: Date, default: Date.now},
+		updated_at: {type: Date, default: Date.now}
 	}
 )
